@@ -1,0 +1,25 @@
+{
+  "items":{
+    "myItem":{
+      "icon":"bruh.png";
+      "instance":"myItem.vmf",
+      "itemParams":{
+        "myMenuOption":{
+          "type":"number",
+          "min":0,
+          "max":5,
+          "reciever":"myEntity"
+        }
+      },
+      "spawnRelay":"NULL",
+      "entranceRelay":"NULL",
+      "exitRelay":"NULL",
+      "locked":false
+    }
+  },
+  "materials":{
+    "myMaterial":{
+      "vtf":"myVTF.vtf"
+    }
+  }
+}
