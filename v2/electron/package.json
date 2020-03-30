@@ -1,0 +1,14 @@
+{
+  "name": "p2o",
+  "version": "1.0.0",
+  "description": "Improved editor for portal 2",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Baguettery",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^8.2.0"
+  }
+}

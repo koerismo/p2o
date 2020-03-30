@@ -1,17 +1,33 @@
-var raycaster, camera, controls, scene, renderer, mat_loader, model_loader, mouse, pmouse, mouseBeingHeld = 0;
+var raycaster,
+camera,
+controls,
+scene,
+renderer,
+mat_loader,
+model_loader,
+mouse,
+pmouse,
+mouseBeingHeld = 0,
+holding_object = 0
 
 function onDocumentMouseMove(event) {
   //pmouse.copy(mouse)
   mouse.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
-  if (mouseBeingHeld)
+  if (!holding_object && mouseBeingHeld)
     camera.rotation.addScalar(mouse).subScalar(pmouse)
 }
 function onDocumentMouseDown(event) {
-  let mouse_object = getSelectedObject()
+  let mouse_object = getSelectedObjects()
+  holding_object = (mouse_object.length > 0)
+  if (mouse_object.length)
+    mouse_object = mouse_object[0]
+  else
+    return;
   mouseBeingHeld = 1;
 }
 function onDocumentMouseUp(event) {
-  mouseBeingHeld = 0;
+  mouseBeingHeld = 0
+  holding_object = 0
 }
 function onDocumentKeyDown(event) {
 
@@ -20,8 +36,9 @@ function onDocumentKeyUp(event) {
 
 }
 
-function getSelectedObject() {
-  //add mouse raycaster code here
+function getSelectedObjects() {
+  raycaster.setFromCamera( mouse, camera );
+  return raycaster.intersectObjects( scene.children );
 }
 
 function init() {
@@ -45,13 +62,14 @@ function init() {
   renderer.setPixelRatio( window.devicePixelRatio )
   renderer.setSize( window.innerWidth, window.innerHeight )
   document.body.appendChild( renderer.domElement )
+  renderer.domElement.requestPointerLock()
 
   mat_loader = new THREE.TextureLoader()
 
   model_loader = new THREE.OBJLoader()
 
-  mouse = new THREE.Vector2()
-  pmouse = new THREE.Vector2()
+  mouse = new THREE.Vector2(0,0)
+  pmouse = new THREE.Vector2(0,0)
 
   document.addEventListener( 'mousemove', onDocumentMouseMove, false );
   document.addEventListener( 'mouseup', onDocumentMouseDown, false );
