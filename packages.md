@@ -38,7 +38,7 @@ Packages
       "spawnRelay":"NULL", // if an entity is here, it will be triggered on level start
       "entranceRelay":"NULL", // triggered when the player enters the room
       "exitRelay":"NULL", // triggered when the player leaves the room
-    }
+    },
     "Floor Button":{
       "icon":"button.png";
       "instance":"button.vmf",
