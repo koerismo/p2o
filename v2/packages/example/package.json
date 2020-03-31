@@ -3,10 +3,28 @@
     "Turret":{
       "icon":"turret.png";
       "instance":"turret.vmf",
-      "itemParams":{
-        "myMenuOption":{
+      "itemInputs":{
+        "Explode":{
           "type":"event",
-          "reciever":"turret_proxy"
+          "input":"instance:turret;SelfDestructImmediately"
+        }
+      },
+      "itemOutputs":{
+      },
+      "spawnRelay":"NULL",
+      "entranceRelay":"NULL",
+      "exitRelay":"NULL",
+      "locked":false
+    }
+    "Floor Button":{
+      "icon":"button.png";
+      "instance":"button.vmf",
+      "itemInputs":{
+      },
+      "itemOutputs":{
+        "On Pressed":{
+          "type":"event",
+          "output":"instance:floor_button;OnPressed"
         }
       },
       "spawnRelay":"NULL",
