@@ -13,7 +13,10 @@ mouse_object,
 keys = {},
 items,
 gridSize = 64,
-selected;
+selected
+
+var selectionmat,
+  hovering = {}
 
 var euler = new THREE.Euler( 0, 0, 0, 'YXZ' );
 var PI_2 = Math.PI / 2;
@@ -24,7 +27,7 @@ function onDocumentMouseMove(event) {
   if (mouseBeingHeld && holding_object) {
     let mp = getMousePos()
     if (mp)
-      moveObjectToCursor(mouse_object[0].object,mp)
+      moveObjectToCursor(holding_object,mp)
   }
   mouse.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
   if (mouseBeingHeld && !holding_object) {
@@ -49,7 +52,7 @@ function onDocumentMouseDown(event) {
   mouseBeingHeld = 1;
   if ((mouse_object.length && mouse_object[0].object.name == "item")){
       //begin holding object
-      holding_object = 1;
+      holding_object = mouse_object[0].object;
   }
   else {
     pointer_lock()
@@ -124,7 +127,7 @@ function animate() {
 }
 
 function init() {
-  material = new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true } );
+  selectionmat = new THREE.MeshStandardMaterial( { emissive: 0xffffff, flatShading: true } );
   cubeGeo = new THREE.BoxGeometry( 64, 64, 64);
 
   raycaster = new THREE.Raycaster()
@@ -133,7 +136,7 @@ function init() {
   camera.position.set( 0, -1, 0 );
 
   scene = new THREE.Scene()
-  scene.background = new THREE.Color( 0xcccccc );
+  scene.background = new THREE.Color( "#000" );
   scene.fog = new THREE.FogExp2( 0xcccccc, 0.0005 );
   var light = new THREE.DirectionalLight( 0xffffff );
   light.position.set( 1, 1, 1 );
@@ -154,19 +157,20 @@ function init() {
   //model_loader = new THREE.OBJLoader()
 
   var geometry = new THREE.SphereBufferGeometry( 32 );
-  material = new THREE.MeshPhysicalMaterial( {map: diffuseTex} );
+  mat = new THREE.MeshPhysicalMaterial( {map: diffuseTex} );
   cubeGeo = new THREE.BoxGeometry( gridSize, gridSize, gridSize);
+  default_cube_mat = [mat,mat,mat,mat,mat,mat]
 
   for ( var z = -5; z <= 5; z ++ ) {
     for ( var y = -5; y <= 5; y ++ ) {
       for ( var x = -5; x <= 5; x ++ ) {
         if (Math.abs(x) > 4 || Math.abs(y) > 4 || Math.abs(z) > 4)
-        addTile(x,y,z,cubeGeo,material)
+        addTile(x,y,z,cubeGeo,default_cube_mat)
       }
     }
   }
 
-  var voxel = new THREE.Mesh( geometry, material );
+  var voxel = new THREE.Mesh( geometry, mat );
   voxel.name = "item"
   scene.add( voxel );
   var light = new THREE.PointLight( "#fff", 1, 500 );
@@ -230,7 +234,8 @@ function addTile(x,y,z,g,m) {
 }
 
 function addVoxelFromSelection(intersect) {
-  var voxel = new THREE.Mesh( cubeGeo, material );
+  var voxel = new THREE.Mesh( cubeGeo, default_cube_mat );
+  console.log(intersect.face.normal)
   voxel.position.copy( intersect.point ).add( intersect.face.normal );
   voxel.position.divideScalar( gridSize ).floor().multiplyScalar( gridSize ).addScalar( gridSize/2 );
   voxel.castShadow = true;
@@ -238,6 +243,33 @@ function addVoxelFromSelection(intersect) {
   voxel.matrixAutoUpdate  = false;
   voxel.updateMatrix();
   scene.add( voxel );
+}
+
+function getFace(intersect) {
+  let ve = intersect.face.normal
+  let li = [ve.x,ve.y,ve.z]
+  let res = 0
+  switch(li) {
+    case [1,0,0]:
+      res = 0
+      break;
+    case [-1,0,0]:
+      res = 1
+      break;
+    case [0,1,0]:
+      res = 2
+      break;
+    case [0,-1,0]:
+      res = 3
+      break;
+    case [0,0,1]:
+      res = 4
+      break;
+    case [0,0,-1]:
+      res = 5
+      break;
+  }
+  return res
 }
 
 function moveObjectToCursor(obj,pos) {

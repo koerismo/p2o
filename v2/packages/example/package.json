@@ -1,14 +1,12 @@
 {
   "items":{
-    "myItem":{
-      "icon":"bruh.png";
-      "instance":"myItem.vmf",
+    "Turret":{
+      "icon":"turret.png";
+      "instance":"turret.vmf",
       "itemParams":{
         "myMenuOption":{
-          "type":"number",
-          "min":0,
-          "max":5,
-          "reciever":"myEntity"
+          "type":"event",
+          "reciever":"turret_proxy"
         }
       },
       "spawnRelay":"NULL",

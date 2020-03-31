@@ -35,3 +35,22 @@ req("resources/packages.json",false,function(x){
     })
   }
 })
+
+
+var vmf = {
+  genhead:function(){
+let hde =
+`visgroups
+{
+}
+viewsettings
+{
+  "bSnapToGrid" "1"
+	"bShowGrid" "1"
+	"bShowLogicalGrid" "0"
+	"nGridSpacing" "64"
+	"bShow3DGrid" "0"
+}`
+    return hde
+  }
+}
