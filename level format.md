@@ -14,12 +14,9 @@ Levels
   "Name":"test",
   "Blocks":[
     {
-      "x1":0,
-      "y1":0,
-      "z1":0,
-      "x2":128,
-      "y2":128,
-      "z2":128,
+      "x":0,
+      "y":0,
+      "z":0,
       "faces":{
         "-x":"My Texture",
         "+x":"My Texture",
