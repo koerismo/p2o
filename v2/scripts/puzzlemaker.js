@@ -36,6 +36,9 @@ req("resources/packages.json",false,function(x){ //this file does not exist. Whe
   }
 })
 
+function fm(ar,s) {
+  return ar.map(function(x){return x*s}).join(" ")
+}
 
 var vmf = {
   genhead:function(){
@@ -53,5 +56,39 @@ viewsettings
 }`
     return hde
   },
-  genface:function(){}
+  genCube:function(id,size,x,y,z){
+    var output = `
+solid
+{
+"id" "`+id+`"
+`
+    let faces = [
+      [[-1,1,1],[1,1,1],[1,-1,1]],
+      [[-1,-1,-1],[1,-1,-1],[1,1,-1]],
+      [[1,1,-1],[1,-1,-1],[-1,-1,-1]],
+      [[1,1,-1],[1,-1,-1],[1,-1,1]],
+      [[1,1,1],[-1,1,1],[-1,1,-1]],
+      [[1,-1,-1],[-1,-1,-1],[-1,-1,1]]
+    ]
+    faces.forEach(function(x,i){
+      x.forEach(y) {
+let fce = `
+side
+{
+"id" "`+(i+id*6)+`"
+"plane" "(`+fm(y[0],size)+`) (`+fm(y[1],size)+`) (`+fm(y[2],size)+`)"
+"material" "/PAINTBLOB"
+"uaxis" "[1 0 0 0] 0.25"
+"vaxis" "[0 -1 0 0] 0.25"
+"rotation" "0"
+"lightmapscale" "16"
+"smoothing_groups" "0"
+}`
+output += fce
+      }
+    })
+    return output+`
+}
+`
+  }
 }
