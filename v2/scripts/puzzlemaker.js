@@ -1,6 +1,6 @@
 var packages;
 
-function req(url,header,func) {
+/*function req(url,header,func) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -34,10 +34,40 @@ req("resources/packages.json",false,function(x){ //this file does not exist. Whe
       })
     })
   }
-})
+})*/
 
 function fm(ar,s) {
   return ar.map(function(x){return x*s}).join(" ")
+}
+
+/*
+in-editor packages format
+{
+  "example":{
+    "Turret":{
+      "instance":"turret.vmf",
+      "icon":"insertbase64image",
+      "model":"insert3dsmodel",
+      "texture":"insertmodeltexture"
+    }
+  }
+}
+*/
+function genVMF(level) {
+  var baseid = 0;
+  var out = "";
+  let calcB = vmf.genGeometry(level.Blocks)
+  out += vmf.genHead()
+  calcb.forEach(function(x){
+    out += vmf.genCube(baseid,x.scale,x.x,x.y,x.z)
+    baseid += 1
+  })
+  out += "}\n"
+  level.Entities.forEach(function(x){
+    out += vmf.genEnt(baseid,packages[x.item[0]][x.item[1]].instance,[x.rot_x,x.rot_y,x.rot_z],[x.x,x.y,x.z])
+    baseid += 1
+  })
+  out += vmf.genFooter()
 }
 
 var vmf = {
@@ -53,7 +83,18 @@ viewsettings
 	"bShowLogicalGrid" "0"
 	"nGridSpacing" "64"
 	"bShow3DGrid" "0"
-}`
+}
+world
+{
+"id" "1"
+"mapversion" "1"
+"classname" "worldspawn"
+"detailmaterial" "detail/detailsprites"
+"detailvbsp" "detail.vbsp"
+"maxblobcount" "250"
+"maxpropscreenwidth" "-1"
+"skyname" "sky_black_nofog"
+`
     return hde
   },
   genCube:function(id,size,x,y,z){
@@ -90,5 +131,62 @@ output += fce
     return output+`
 }
 `
+  },
+  genEnt:function(id,inst,angles,pos) {
+return `
+entity
+{
+"id" "`+id+`"
+"classname" "func_instance"
+"angles" "`+angles.join(" ")+`"
+"file" "`+inst+`"
+"fixup_style" "0"
+"origin" "`+pos.join(" ")+`"
+}`
+  },
+  genFooter:function() {
+    return `
+cameras
+{
+	"activecamera" "-1"
+}
+cordons
+{
+	"active" "0"
+}`
   }
+}
+
+function genGeometry(blocks) {
+  function checkBlock(x,y,z) {
+    let pa = blocks.filter(function(a){
+      return (a.x == x && a.y == y && a.z == z)
+    }).length > 0
+    let pb = out.filter(function(a){
+      return (a.x == x && a.y == y && a.z == z)
+    }).length > 0
+    return (pa||pb)
+  }
+  var out = []
+  blocks.forEach(function(x){
+    if (!checkBlock(x.x+x.scale,x.y,x.z)) {
+      out.push({x:x.x+x.scale,y:x.y,z:x.z})
+    }
+    if (!checkBlock(x.x-x.scale,x.y,x.z)) {
+      out.push({x:x.x-x.scale,y:x.y,z:x.z})
+    }
+    if (!checkBlock(x.x,x.y+x.scale,x.z)) {
+      out.push({x:x.x,y:x.y+x.scale,z:x.z})
+    }
+    if (!checkBlock(x.x,x.y-x.scale,x.z)) {
+      out.push({x:x.x,y:x.y-x.scale,z:x.z})
+    }
+    if (!checkBlock(x.x,x.y,x.z+x.scale)) {
+      out.push({x:x.x,y:x.y,z:x.z+x.scale})
+    }
+    if (!checkBlock(x.x,x.y,x.z-x.scale)) {
+      out.push({x:x.x,y:x.y,z:x.z-x.scale})
+    }
+  })
+  return out
 }
