@@ -13,8 +13,36 @@ Levels
 {
   "Name":"test",
   "Blocks":[
+    { //these are the inside chamber space
+      "x":-128,
+      "y":0,
+      "z":0,
+      "faces":{
+        "-x":"My Texture",
+        "+x":"My Texture",
+        "-y":"My Texture",
+        "+y":"My Texture",
+        "-z":"My Texture",
+        "+z":"My Texture"
+      },
+      "scale":128
+    },
     {
       "x":0,
+      "y":0,
+      "z":0,
+      "faces":{
+        "-x":"My Texture",
+        "+x":"My Texture",
+        "-y":"My Texture",
+        "+y":"My Texture",
+        "-z":"My Texture",
+        "+z":"My Texture"
+      },
+      "scale":128
+    },
+    {
+      "x":128,
       "y":0,
       "z":0,
       "faces":{
@@ -29,39 +57,40 @@ Levels
     }
   ],
   "Entities":[
-      {
-      "item":["example","Turret"], //Package name, item name
+      { //this item is id 0
+      "item":["example","Turret"],
+      "x":-128,
+      "y":0,
+      "z":0,
+      "rot_x":0,
+      "rot_y":0,
+      "rot_z":0
+      },
+      { //this item is id 1
+      "item":["example","Floor Button"],
       "x":0,
       "y":0,
       "z":0,
       "rot_x":0,
       "rot_y":0,
       "rot_z":0,
-      "connections":[
-        {
-        "id":1,
-        "type":"input", //input connections will not be considered while compiling. (they are used in the editor for optimization)
-        "event:"On Pressed",
-        "result":"Explode"
-        }
-      ]
+      "itemOutputs":{
+        0:[ // item 0
+          {"event":"On Pressed","output":"Explode"}
+        ],
+        2:[
+          {"event":"On UnPressed","output":"Explode"}
+        ]
+      }
     },
-    {
-      "item":["example","Floor Button"],
-      "x":128,
-      "y":0,
-      "z":0,
-      "rot_x":0,
-      "rot_y":0,
-      "rot_z":0,
-      "connections":[
-        {
-        "id":0,
-        "type":"output",
-        "event:"On Pressed",
-        "result":"Explode"
-        }
-      ]
+    { //this item is id 2
+    "item":["example","Turret"],
+    "x":128,
+    "y":0,
+    "z":0,
+    "rot_x":0,
+    "rot_y":0,
+    "rot_z":0
     }
   ]
 }
