@@ -25,9 +25,38 @@
       "rot_x":0,
       "rot_y":0,
       "rot_z":0,
-      "itemParams":{
-        "myMenuOption":3
+      "itemOutputs":{
       }
+      }
+      {
+      "item":["example","Floor Button"],
+      "x":0,
+      "y":0,
+      "z":0,
+      "rot_x":0,
+      "rot_y":0,
+      "rot_z":0,
+      "itemInputs":{
+      },
+      "itemOutputs":{
+        0:[
+          {"event":"On Pressed","output":"Explode"}
+        ],
+        2:[
+          {"event":"On UnPressed","output":"Explode"}
+        ]
+      }
+    },
+    {
+    "item":["example","Turret"],
+    "x":128,
+    "y":0,
+    "z":0,
+    "rot_x":0,
+    "rot_y":0,
+    "rot_z":0,
+    "itemOutputs":{
+    }
     }
   ]
 }

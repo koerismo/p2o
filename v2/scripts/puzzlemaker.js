@@ -36,6 +36,8 @@ req("resources/packages.json",false,function(x){ //this file does not exist. Whe
   }
 })*/
 
+"instance:floor_button;OnUnPressed" "``,instance:turret;SelfDestructImmediately,,0,-1"
+
 function fm(ar,s,x,y,z) {
   return (ar[0]*s/2+x)+" "+(ar[1]*s/2+y)+" "+(ar[2]*s/2+z)
 }
@@ -145,7 +147,7 @@ editor
 }
 `
   },
-  genEnt:function(id,inst,angles,pos) {
+  genEnt:function(id,inst,angles,pos,connections) {
 return `
 entity
 {
@@ -155,6 +157,11 @@ entity
 "file" "`+inst+`"
 "fixup_style" "0"
 "origin" "`+pos.join(" ")+`"
+"targetname" "ITEM_`+id+`"
+connections
+{
+`+genConnections()+`
+}
 }`
   },
   genFooter:function() {
@@ -171,33 +178,36 @@ cordons
 }
 
 function genGeometry(blocks) {
-  function checkBlock(x,y,z) {
+  function checkBlock(x,y,z,si) {
     let pa = blocks.filter(function(a){
-      return (a.x == x && a.y == y && a.z == z)
+      return ((a.x+a.scale/2 > x-si/2 && a.y+a.scale/2 > y-si/2 && a.z+a.scale/2 > z-si/2) &&
+      (a.x-a.scale/2 < x+si/2 && a.y-a.scale/2 < y+si/2 && a.z-a.scale/2 < z+si/2))
     }).length > 0
     let pb = out.filter(function(a){
-      return (a.x == x && a.y == y && a.z == z)
+      return ((a.x+a.scale/2 > x-si/2 && a.y+a.scale/2 > y-si/2 && a.z+a.scale/2 > z-si/2) &&
+      (a.x-a.scale/2 < x+si/2 && a.y-a.scale/2 < y+si/2 && a.z-a.scale/2 < z+si/2))
     }).length > 0
     return (pa||pb)
   }
   var out = []
-  blocks.forEach(function(x){
-    if (!checkBlock(x.x+x.scale,x.y,x.z)) {
+  let blk = blocks.sort(function(a,b) {return a.scale > b.scale})
+  blk.forEach(function(x){
+    if (!checkBlock(x.x+x.scale,x.y,x.z,x.scale)) {
       out.push({x:x.x+x.scale,y:x.y,z:x.z,scale:x.scale})
     }
-    if (!checkBlock(x.x-x.scale,x.y,x.z)) {
+    if (!checkBlock(x.x-x.scale,x.y,x.z,x.scale)) {
       out.push({x:x.x-x.scale,y:x.y,z:x.z,scale:x.scale})
     }
-    if (!checkBlock(x.x,x.y+x.scale,x.z)) {
+    if (!checkBlock(x.x,x.y+x.scale,x.z,x.scale)) {
       out.push({x:x.x,y:x.y+x.scale,z:x.z,scale:x.scale})
     }
-    if (!checkBlock(x.x,x.y-x.scale,x.z)) {
+    if (!checkBlock(x.x,x.y-x.scale,x.z,x.scale)) {
       out.push({x:x.x,y:x.y-x.scale,z:x.z,scale:x.scale})
     }
-    if (!checkBlock(x.x,x.y,x.z+x.scale)) {
+    if (!checkBlock(x.x,x.y,x.z+x.scale,x.scale)) {
       out.push({x:x.x,y:x.y,z:x.z+x.scale,scale:x.scale})
     }
-    if (!checkBlock(x.x,x.y,x.z-x.scale)) {
+    if (!checkBlock(x.x,x.y,x.z-x.scale,x.scale)) {
       out.push({x:x.x,y:x.y,z:x.z-x.scale,scale:x.scale})
     }
   })
