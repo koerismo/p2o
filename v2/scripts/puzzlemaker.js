@@ -36,7 +36,7 @@ req("resources/packages.json",false,function(x){ //this file does not exist. Whe
   }
 })*/
 
-"instance:floor_button;OnUnPressed" "``,instance:turret;SelfDestructImmediately,,0,-1"
+//"instance:floor_button;OnUnPressed" "``,instance:turret;SelfDestructImmediately,,0,-1"
 
 function fm(ar,s,x,y,z) {
   return (ar[0]*s/2+x)+" "+(ar[1]*s/2+y)+" "+(ar[2]*s/2+z)
@@ -123,12 +123,13 @@ solid
       [[1,0,0],[0,-1,0]]
     ]
     faces.forEach(function(n,i){
+let mats = ['metal/black_wall_metal_002e','metal/black_wall_metal_002e','metal/black_wall_metal_002e','metal/black_wall_metal_002e','metal/black_floor_metal_001a','metal/black_floor_metal_001a']
 let fce = `
 side
 {
 "id" "`+(i+id*6)+`"
 "plane" "(`+fm(n[0],s,x,y,z)+`) (`+fm(n[1],s,x,y,z)+`) (`+fm(n[2],s,x,y,z)+`)"
-"material" "/PAINTBLOB"
+"material" "`+mats[i]+`"
 "uaxis" "[`+uvs[i][0].join(" ")+` 0] 0.25"
 "vaxis" "[`+uvs[i][1].join(" ")+` 0] 0.25"
 "rotation" "0"
@@ -178,6 +179,7 @@ cordons
 }
 
 function genGeometry(blocks) {
+  var out = []
   function checkBlock(x,y,z,si) {
     let pa = blocks.filter(function(a){
       return ((a.x+a.scale/2 > x-si/2 && a.y+a.scale/2 > y-si/2 && a.z+a.scale/2 > z-si/2) &&
@@ -189,27 +191,47 @@ function genGeometry(blocks) {
     }).length > 0
     return (pa||pb)
   }
-  var out = []
-  let blk = blocks.sort(function(a,b) {return a.scale > b.scale})
+  let blk = blocks.sort(function(a,b) {return a.scale < b.scale})
   blk.forEach(function(x){
-    if (!checkBlock(x.x+x.scale,x.y,x.z,x.scale)) {
-      out.push({x:x.x+x.scale,y:x.y,z:x.z,scale:x.scale})
+    for (var px = -1; px <= 1; px++) {
+      for (var py = -1; py <= 1; py++) {
+        for (var pz = -1; pz <= 1; pz++) {
+          if (px != 0 || py != 0 || pz != 0) {
+          if (!checkBlock(x.x+px*x.scale,x.y+py*x.scale,x.z+pz*x.scale,x.scale))
+            out.push({x:x.x+px*x.scale,
+                    y:x.y+py*x.scale,
+                    z:x.z+pz*x.scale,
+                    scale:x.scale
+                  })
+        }}
+      }
     }
-    if (!checkBlock(x.x-x.scale,x.y,x.z,x.scale)) {
-      out.push({x:x.x-x.scale,y:x.y,z:x.z,scale:x.scale})
-    }
-    if (!checkBlock(x.x,x.y+x.scale,x.z,x.scale)) {
-      out.push({x:x.x,y:x.y+x.scale,z:x.z,scale:x.scale})
-    }
-    if (!checkBlock(x.x,x.y-x.scale,x.z,x.scale)) {
-      out.push({x:x.x,y:x.y-x.scale,z:x.z,scale:x.scale})
-    }
-    if (!checkBlock(x.x,x.y,x.z+x.scale,x.scale)) {
-      out.push({x:x.x,y:x.y,z:x.z+x.scale,scale:x.scale})
-    }
-    if (!checkBlock(x.x,x.y,x.z-x.scale,x.scale)) {
-      out.push({x:x.x,y:x.y,z:x.z-x.scale,scale:x.scale})
-    }
+    /*[[-1,-1,-1],
+[0,-1,-1],
+[1,-1,-1],
+[-1,0,-1],
+[0,0,-1],
+[1,0,-1],
+[-1,1,-1],
+[0,1,-1],
+[1,1,-1],
+[-1,-1,0],
+[0,-1,0],
+[1,-1,0],
+[-1,0,0],
+[1,0,0],
+[-1,1,0],
+[0,1,0],
+[1,1,0],
+[-1,-1,1],
+[0,-1,1],
+[1,-1,1],
+[-1,0,1],
+[0,0,1],
+[1,0,1],
+[-1,1,1],
+[0,1,0],
+[1,1,0]]*/
   })
   return out
 }
