@@ -1,7 +1,5 @@
 {
   "Name":"test",
-  "Packages":[
-  ],
   "Blocks":[
     {
       "x1":0,
@@ -11,19 +9,19 @@
       "y2":128,
       "z2":128,
       "faces":{
-        "-x":"myTexture.vtf",
-        "+x":"myTexture.vtf",
-        "-y":"myTexture.vtf",
-        "+y":"myTexture.vtf",
-        "-z":"myTexture.vtf",
-        "+z":"myTexture.vtf"
+        "-x":"My Texture",
+        "+x":"My Texture",
+        "-y":"My Texture",
+        "+y":"My Texture",
+        "-z":"My Texture",
+        "+z":"My Texture"
       },
       "scale":128
     }
   ],
   "Entities":[
       {
-      "item":"example/myItem",
+      "item":["example","Turret"],
       "x":0,
       "y":0,
       "z":0,
