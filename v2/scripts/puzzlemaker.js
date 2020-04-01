@@ -56,9 +56,9 @@ in-editor packages format
 function genVMF(level) {
   var baseid = 0;
   var out = "";
-  let calcB = vmf.genGeometry(level.Blocks)
+  let calcB = genGeometry(level.Blocks)
   out += vmf.genHead()
-  calcb.forEach(function(x){
+  calcB.forEach(function(x){
     out += vmf.genCube(baseid,x.scale,x.x,x.y,x.z)
     baseid += 1
   })
@@ -68,10 +68,11 @@ function genVMF(level) {
     baseid += 1
   })
   out += vmf.genFooter()
+  return out
 }
 
 var vmf = {
-  genhead:function(){
+  genHead:function(){
 let hde =
 `visgroups
 {
@@ -97,13 +98,13 @@ world
 `
     return hde
   },
-  genCube:function(id,size,x,y,z){
+  genCube:function(id,s,x,y,z){
     var output = `
 solid
 {
 "id" "`+id+`"
 `
-    let faces = [
+    var faces = [
       [[-1,1,1],[1,1,1],[1,-1,1]],
       [[-1,-1,-1],[1,-1,-1],[1,1,-1]],
       [[1,1,-1],[1,-1,-1],[-1,-1,-1]],
@@ -112,12 +113,12 @@ solid
       [[1,-1,-1],[-1,-1,-1],[-1,-1,1]]
     ]
     faces.forEach(function(x,i){
-      x.forEach(y) {
+      console.log(x[0],s)
 let fce = `
 side
 {
 "id" "`+(i+id*6)+`"
-"plane" "(`+fm(y[0],size)+`) (`+fm(y[1],size)+`) (`+fm(y[2],size)+`)"
+"plane" "(`+fm(x[0],s)+`) (`+fm(x[1],s)+`) (`+fm(x[2],s)+`)"
 "material" "/PAINTBLOB"
 "uaxis" "[1 0 0 0] 0.25"
 "vaxis" "[0 -1 0 0] 0.25"
@@ -126,9 +127,14 @@ side
 "smoothing_groups" "0"
 }`
 output += fce
-      }
-    })
-    return output+`
+})
+return output+`
+editor
+{
+  "color" "0 212 241"
+  "visgroupshown" "1"
+  "visgroupautoshown" "1"
+}
 }
 `
   },
@@ -170,23 +176,24 @@ function genGeometry(blocks) {
   var out = []
   blocks.forEach(function(x){
     if (!checkBlock(x.x+x.scale,x.y,x.z)) {
-      out.push({x:x.x+x.scale,y:x.y,z:x.z})
+      out.push({x:x.x+x.scale,y:x.y,z:x.z,scale:x.scale})
     }
     if (!checkBlock(x.x-x.scale,x.y,x.z)) {
-      out.push({x:x.x-x.scale,y:x.y,z:x.z})
+      out.push({x:x.x-x.scale,y:x.y,z:x.z,scale:x.scale})
     }
     if (!checkBlock(x.x,x.y+x.scale,x.z)) {
-      out.push({x:x.x,y:x.y+x.scale,z:x.z})
+      out.push({x:x.x,y:x.y+x.scale,z:x.z,scale:x.scale})
     }
     if (!checkBlock(x.x,x.y-x.scale,x.z)) {
-      out.push({x:x.x,y:x.y-x.scale,z:x.z})
+      out.push({x:x.x,y:x.y-x.scale,z:x.z,scale:x.scale})
     }
     if (!checkBlock(x.x,x.y,x.z+x.scale)) {
-      out.push({x:x.x,y:x.y,z:x.z+x.scale})
+      out.push({x:x.x,y:x.y,z:x.z+x.scale,scale:x.scale})
     }
     if (!checkBlock(x.x,x.y,x.z-x.scale)) {
-      out.push({x:x.x,y:x.y,z:x.z-x.scale})
+      out.push({x:x.x,y:x.y,z:x.z-x.scale,scale:x.scale})
     }
   })
   return out
 }
+//genVMF({Blocks:[{x:0,y:0,z:0,scale:128},{x:0,y:0,z:0,scale:128}],Entities:[]})
