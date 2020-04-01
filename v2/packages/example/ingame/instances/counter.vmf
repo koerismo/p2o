@@ -1,0 +1,138 @@
+versioninfo
+{
+	"editorversion" "400"
+	"editorbuild" "8419"
+	"mapversion" "3"
+	"formatversion" "100"
+	"prefab" "0"
+}
+visgroups
+{
+}
+viewsettings
+{
+	"bSnapToGrid" "1"
+	"bShowGrid" "1"
+	"bShowLogicalGrid" "0"
+	"nGridSpacing" "8"
+	"bShow3DGrid" "0"
+}
+world
+{
+	"id" "1"
+	"mapversion" "3"
+	"classname" "worldspawn"
+	"skyname" "sky_black_nofog"
+	"maxpropscreenwidth" "-1"
+	"detailvbsp" "detail.vbsp"
+	"detailmaterial" "detail/detailsprites"
+	"maxblobcount" "250"
+}
+entity
+{
+	"id" "2"
+	"classname" "math_counter"
+	"max" "$val_max"
+	"min" "$val_min"
+	"StartDisabled" "0"
+	"startvalue" "0"
+	"targetname" "counter"
+	connections
+	{
+		"OnHitMax" "counter_proxyProxyRelay0-1"
+		"OnHitMin" "counter_proxyProxyRelay0-1"
+	}
+	"origin" "0 0 0"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
+entity
+{
+	"id" "9"
+	"classname" "func_instance_io_proxy"
+	"targetname" "counter_proxy"
+	connections
+	{
+		"OnProxyRelay" "counter_subtractTrigger0-1"
+		"OnProxyRelay" "counter_addTrigger0-1"
+	}
+	"origin" "0 0 16"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
+entity
+{
+	"id" "30"
+	"classname" "logic_relay"
+	"StartDisabled" "0"
+	"targetname" "counter_subtract"
+	connections
+	{
+		"OnTrigger" "counterAdd-10-1"
+	}
+	"origin" "-16 0 0"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 500]"
+	}
+}
+entity
+{
+	"id" "53"
+	"classname" "logic_relay"
+	"StartDisabled" "0"
+	"targetname" "counter_add"
+	connections
+	{
+		"OnTrigger" "counterAdd10-1"
+	}
+	"origin" "-16 0 16"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 500]"
+	}
+}
+entity
+{
+	"id" "63"
+	"classname" "func_instance_parms"
+	"parm1" "$val_max integer"
+	"parm2" "$val_min integer"
+	connections
+	{
+		"OnProxyRelay" "counter_subtractTrigger0-1"
+		"OnProxyRelay" "counter_addTrigger0-1"
+	}
+	"origin" "16 0 0"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
+cameras
+{
+	"activecamera" "-1"
+}
+cordons
+{
+	"active" "0"
+}

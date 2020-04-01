@@ -16,7 +16,7 @@ function req(url,header,func) {
 }
 
 console.log("retrieving packages...")
-req("resources/packages.json",false,function(x){
+req("resources/packages.json",false,function(x){ //this file does not exist. When requested, the server should return a JSON formatted list of folders inside the packages folder
   console.log("downloading last used...")
   if (x.status) {
     JSON.parse(x.responseText).list.forEach(function(x){
@@ -52,5 +52,6 @@ viewsettings
 	"bShow3DGrid" "0"
 }`
     return hde
-  }
+  },
+  genface:function(){}
 }
