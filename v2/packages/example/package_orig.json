@@ -1,6 +1,7 @@
 {
   "items":{
     "Turret":{
+      "name":"Turret",
       "icon":"turret.png";
       "instance":"turret.vmf",
       "itemInputs":{
@@ -15,8 +16,9 @@
       "entranceRelay":"NULL",
       "exitRelay":"NULL",
       "locked":false
-    }
+    },
     "Floor Button":{
+      "name":"Floor Button",
       "icon":"button.png";
       "instance":"button.vmf",
       "itemInputs":{
