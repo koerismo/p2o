@@ -30,7 +30,7 @@ Levels
   ],
   "Entities":[
       {
-      "item":["example","Turret"],
+      "item":["example","Turret"], //Package name, item name
       "x":0,
       "y":0,
       "z":0,
