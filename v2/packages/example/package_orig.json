@@ -6,7 +6,7 @@
       "itemInputs":{
         "Explode":{
           "type":"event",
-          "input":"instance:turretSelfDestructImmediately"
+          "input":"instance:turret;SelfDestructImmediately"
         }
       },
       "itemOutputs":{
@@ -24,7 +24,7 @@
       "itemOutputs":{
         "On Pressed":{
           "type":"event",
-          "output":"instance:floor_buttonOnPressed"
+          "output":"instance:floor_button;OnPressed"
         }
       },
       "spawnRelay":"NULL",
