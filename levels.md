@@ -4,7 +4,7 @@
 ## Folder Structure
 ```
 Levels
-└───mylevel.json
+└───mylevel.pea
 ```
 
 ## level.pea
