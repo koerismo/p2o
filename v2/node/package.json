@@ -4,11 +4,11 @@
   "description": "Improved editor for portal 2",
   "main": "index.js",
   "scripts": {
-    "start": "electron ."
+    "start": "node ."
   },
   "author": "Baguettery",
   "license": "MIT",
-  "devDependencies": {
-    "electron": "^8.2.0"
+  "dependencies": {
+    "node-run-cmd": "^1.0.1"
   }
 }

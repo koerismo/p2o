@@ -18,7 +18,7 @@ function loadFile(url, callback) {
     xhr.send(null);
 }
 
-var itembar = document.getElementById("sidebar_left")
+var itembar = $("#sidebar_left")
 console.log("retrieving packages...")
 loadFile("packages.json",function(x){ //this file does not exist. When requested, the server should return a JSON formatted list of folders inside the packages folder
   var pkglist = JSON.parse(x.response)
@@ -43,6 +43,9 @@ function loadPackage(pkgname,callback) {
     let file = JSON.parse(x.responseText)
 
     file.items.forEach(function(x){
+      loadFile("packages/"+pkgname+"/editor/"+x.model,function(x){
+        packages[pkgname][x.name]
+      })
       let im = document.createElement("IMG")
       im.src = "packages/"+pkgname+"/editor/"+x.icon
       itemgroup.appendChild(im)
