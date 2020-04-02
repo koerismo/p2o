@@ -25,6 +25,7 @@ Packages
 {
   "items":{
     "Turret":{ // this should be what you want the item to be named
+      "name":"Turret", //same as above
       "icon":"turret.png"; // packagename/editor/icons/turret.png
       "instance":"turret.vmf", // packagename/ingame/instances.turret.vmf
       "itemInputs":{
@@ -40,6 +41,7 @@ Packages
       "exitRelay":"NULL", // triggered when the player leaves the room
     },
     "Floor Button":{
+      "name":"Floor Button",
       "icon":"button.png";
       "instance":"button.vmf",
       "itemInputs":{
