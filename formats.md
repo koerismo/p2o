@@ -5,7 +5,7 @@
 ### PEA
 > PEA (Portal Editor Abstract) is the format used by the level editor itself to store editable levels.
 > It is composed of air space, items, and other things.
-> See [levels](/levels.md) for more details.
+> See [levels](/p2o/levels) for more details.
 
 ### PEC
 > PEC (Portal Editor Compiled) is like the PEA format, but with calculated solids that can be used by the styling script
@@ -19,4 +19,4 @@
 > This file is not editable by P2O.
 
 ### Packages
-> See [packages](/packages.md) section.
+> See [packages](/p2o/packages) section.
