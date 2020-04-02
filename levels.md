@@ -7,57 +7,57 @@ Levels
 └───mylevel.json
 ```
 
-## level.json
+## level.pea
 *sample code*
 ```javascript
 {
-  "Name":"test",
+  "Name":"My Test",
   "Blocks":[
-    { //these are the inside chamber space
+    {
       "x":-128,
       "y":0,
       "z":0,
-      "faces":{
-        "-x":"My Texture",
-        "+x":"My Texture",
-        "-y":"My Texture",
-        "+y":"My Texture",
-        "-z":"My Texture",
-        "+z":"My Texture"
-      },
+      "faces":[ //these are roles not textures (see more in formats section)
+        "white",
+        "white", //roles converted to white_wall, white_ceil, or white_floor when compiled to PEC
+        "white",
+        "white",
+        "white",
+        "white"
+      ],
       "scale":128
     },
     {
       "x":0,
       "y":0,
       "z":0,
-      "faces":{
-        "-x":"My Texture",
-        "+x":"My Texture",
-        "-y":"My Texture",
-        "+y":"My Texture",
-        "-z":"My Texture",
-        "+z":"My Texture"
-      },
+      "faces":[
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white"
+      ],
       "scale":128
     },
     {
       "x":128,
       "y":0,
       "z":0,
-      "faces":{
-        "-x":"My Texture",
-        "+x":"My Texture",
-        "-y":"My Texture",
-        "+y":"My Texture",
-        "-z":"My Texture",
-        "+z":"My Texture"
-      },
+      "faces":[
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white"
+      ],
       "scale":128
     }
   ],
   "Entities":[
-      { //this item is id 0
+      {
       "item":["example","Turret"],
       "x":-128,
       "y":0,
@@ -66,7 +66,7 @@ Levels
       "rot_y":0,
       "rot_z":0
       },
-      { //this item is id 1
+      {
       "item":["example","Floor Button"],
       "x":0,
       "y":0,
@@ -75,7 +75,7 @@ Levels
       "rot_y":0,
       "rot_z":0,
       "itemOutputs":{
-        0:[ // item 0
+        0:[
           {"event":"On Pressed","output":"Explode"}
         ],
         2:[
@@ -83,7 +83,7 @@ Levels
         ]
       }
     },
-    { //this item is id 2
+    {
     "item":["example","Turret"],
     "x":128,
     "y":0,
