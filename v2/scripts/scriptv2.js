@@ -13,7 +13,8 @@ mouse_object,
 keys = {},
 items,
 gridSize = 64,
-selected
+selected,
+action
 
 var selectionmat,
   hovering = {}
@@ -24,13 +25,13 @@ var vec = new THREE.Vector3();
 
 //code modified from PointerLockControls.js
 function onDocumentMouseMove(event) {
-  if (mouseBeingHeld && holding_object) {
+  if (mouseBeingHeld && holding_object && action == "holding_object") {
     let mp = getMousePos()
     if (mp)
       moveObjectToCursor(holding_object,mp)
   }
   mouse.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
-  if (mouseBeingHeld && !holding_object) {
+  if (mouseBeingHeld && action == "moving_view") {
     var movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
     var movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
     euler.setFromQuaternion( camera.quaternion );
@@ -50,17 +51,21 @@ function onDocumentMouseDown(event) {
       //selected.object.material.emissive.setHex(0xfff);
   }
   mouseBeingHeld = 1;
-  if ((mouse_object.length && mouse_object[0].object.name == "item")){
+  if ((mouse_object.length && mouse_object[0].object.name == "item") && action == "none"){
       //begin holding object
+      action = "holding_object"
       holding_object = mouse_object[0].object;
   }
-  else {
+  else if (action == "none") {
+    action = "moving_view"
     pointer_lock()
 
   }
 }
 
 function onDocumentMouseUp(event) {
+  if (action != "toolbar")
+    action = "none"
   pointer_unlock()
   mouseBeingHeld = 0
   holding_object = 0
@@ -197,7 +202,6 @@ function init() {
   document.addEventListener( 'mousemove', onDocumentMouseMove, false );
   document.addEventListener( 'mouseup', onDocumentMouseUp, false );
   document.addEventListener( 'mousedown', onDocumentMouseDown, false );
-  //document.addEventListener( 'click', onDocumentMouseClick, false );
   document.addEventListener( 'keydown', onDocumentKeyDown, false );
   document.addEventListener( 'keyup', onDocumentKeyUp, false );
 }

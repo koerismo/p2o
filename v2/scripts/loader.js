@@ -19,6 +19,15 @@ function loadFile(url, callback) {
 }
 
 var itembar = $("#sidebar_left")
+
+itembar.onmouseenter = function(){
+  console.log("bruh")
+  action = "toolbar"
+}
+itembar.onmouseleave = function(){
+  action = "none"
+}
+
 console.log("retrieving packages...")
 loadFile("packages.json",function(x){ //this file does not exist. When requested, the server should return a JSON formatted list of folders inside the packages folder
   var pkglist = JSON.parse(x.response)
@@ -28,8 +37,6 @@ loadFile("packages.json",function(x){ //this file does not exist. When requested
       console.log("downloaded package "+i+"/"+pkglist.length)
     })
   })
-    })
-  }
 })
 
 function loadPackage(pkgname,callback) {
@@ -38,7 +45,7 @@ function loadPackage(pkgname,callback) {
     var itemgroup = document.createElement("DIV")
     let title = document.createElement("H1")
     title.innerText = pkgname
-    itembar.appendChild(title)
+    itembar.append(title)
 
     let file = JSON.parse(x.responseText)
 
@@ -48,8 +55,8 @@ function loadPackage(pkgname,callback) {
       })
       let im = document.createElement("IMG")
       im.src = "packages/"+pkgname+"/editor/"+x.icon
-      itemgroup.appendChild(im)
+      itemgroup.append(im)
     })
-    itembar.appendChild(itemgroup)
+    itembar.append(itemgroup)
   })
 }
