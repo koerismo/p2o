@@ -33,8 +33,14 @@ http.createServer(function (req, res) {
   }
   else if (req.url == "/compile") {
     console.log(req)
-    //nrc.run("%programfiles(x86)%\\Steam\\steamapps\\common\\Portal 2\\bin\\vbsp.exe");
-    nrc.run("F:\\Steam\\steamapps\\common\\Portal 2\\in\\vbsp_original.exe"); // MUST DO: enable custom directories
+    fs.writeFile(__dirname+"/../compile/level.vmf","this_is_a_bruh",function(a){
+      if (a)
+        console.log("Error when attempting to write to file.")
+      else {
+        //nrc.run("%programfiles(x86)%\\Steam\\steamapps\\common\\Portal 2\\bin\\vbsp.exe \""+__dirname+"/../compile/level.vmf\"");
+        nrc.run("F:\\Steam\\steamapps\\common\\Portal 2\\in\\vbsp_original.exe \""+__dirname+"/../compile/level.vmf\""); // MUST DO: make custom directories
+      }
+    })
   }
   else {
     res.write('Hello World!'); //write a response to the client
