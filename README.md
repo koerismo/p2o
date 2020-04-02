@@ -1,6 +1,8 @@
 # p2o
 Portal 2 Online Editor
 
+### P2O is an external editor for use with portal 2.
+
 ## Docs
-* [How to format packages](packages.md)
-* [How to format levels](levels.md)
+* [Packages](/packages)
+* [Formats](/formats)
