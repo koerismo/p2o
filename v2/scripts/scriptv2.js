@@ -112,6 +112,17 @@ function render() {
   renderer.render( scene, camera );
 }
 
+function calcMat(mat,x,y,z) {
+  return [
+    [0,mat][1*(x == 5)],
+    [0,mat][1*(x == -5)],
+    [0,mat][1*(y == 5)],
+    [0,mat][1*(y == -5)],
+    [0,mat][1*(z == 5)],
+    [0,mat][1*(z == -5)]
+  ]
+}
+
 function animate() {
   if (keys[87]) {
     moveForward(5)
@@ -163,14 +174,15 @@ function init() {
 
   var geometry = new THREE.SphereBufferGeometry( 32 );
   mat = new THREE.MeshPhysicalMaterial( {map: diffuseTex} );
+  mat.side = THREE.BackSide
+  mat.shadowSide = THREE.BackSide
   cubeGeo = new THREE.BoxGeometry( gridSize, gridSize, gridSize);
   default_cube_mat = [mat,mat,mat,mat,mat,mat]
 
   for ( var z = -5; z <= 5; z ++ ) {
     for ( var y = -5; y <= 5; y ++ ) {
       for ( var x = -5; x <= 5; x ++ ) {
-        if (Math.abs(x) > 4 || Math.abs(y) > 4 || Math.abs(z) > 4)
-        addTile(x,y,z,cubeGeo,default_cube_mat)
+        addTile(x,y,z,cubeGeo,calcMat(mat,x,y,z))
       }
     }
   }
