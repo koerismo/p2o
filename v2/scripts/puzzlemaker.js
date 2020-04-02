@@ -18,17 +18,23 @@ in-editor packages format
   }
 }
 */
-function genVMF(level) {
+function compileAll(level) {
+  let compile0 = genGeometry(level.Blocks) //pea to pec
+  let compile1 = executeStyle(compile0) //stylize pec
+  let compile2 = genVMF(compile1) //pec to vmf
+  return compile2
+}
+
+function genVMF(pec) {
   var baseid = 0;
   var out = "";
-  let calcB = genGeometry(level.Blocks)
   out += vmf.genHead()
-  calcB.forEach(function(x){
+  pec.Blocks.forEach(function(x){
     out += vmf.genCube(baseid,x.scale,x.x,x.y,x.z)
     baseid += 1
   })
   out += "}\n"
-  level.Entities.forEach(function(x){
+  pec.Entities.forEach(function(x){
     out += vmf.genEnt(baseid,packages[x.item[0]][x.item[1]].instance,[x.rot_x,x.rot_y,x.rot_z],[x.x,x.y,x.z])
     baseid += 1
   })
@@ -164,7 +170,8 @@ function genGeometry(blocks) {
             out.push({x:x.x+px*x.scale,
                     y:x.y+py*x.scale,
                     z:x.z+pz*x.scale,
-                    scale:x.scale
+                    scale:x.scale,
+                    roles:{wall:(py==0),floor:(py==-1),ceiling:(py==1)}
                   })
         }}
       }

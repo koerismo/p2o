@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "8419"
-	"mapversion" "16"
+	"mapversion" "18"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "16"
+	"mapversion" "18"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -718,7 +718,7 @@ world
 		{
 			"id" "522"
 			"plane" "(-64 -64 0) (-64 64 0) (64 64 0)"
-			"material" "TOOLS/TOOLSINVISIBLE"
+			"material" "TOOLS/TOOLSCLIP"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 -1 0 0] 0.25"
 			"rotation" "0"
@@ -729,7 +729,7 @@ world
 		{
 			"id" "523"
 			"plane" "(-64 64 -6) (-64 -64 -6) (64 -64 -6)"
-			"material" "TOOLS/TOOLSINVISIBLE"
+			"material" "TOOLS/TOOLSCLIP"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 -1 0 0] 0.25"
 			"rotation" "0"
@@ -740,7 +740,7 @@ world
 		{
 			"id" "524"
 			"plane" "(-64 -64 -6) (-64 64 -6) (-64 64 0)"
-			"material" "TOOLS/TOOLSINVISIBLE"
+			"material" "TOOLS/TOOLSCLIP"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -751,7 +751,7 @@ world
 		{
 			"id" "525"
 			"plane" "(64 64 -6) (64 -64 -6) (64 -64 0)"
-			"material" "TOOLS/TOOLSINVISIBLE"
+			"material" "TOOLS/TOOLSCLIP"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -762,7 +762,7 @@ world
 		{
 			"id" "526"
 			"plane" "(-64 64 -6) (64 64 -6) (64 64 0)"
-			"material" "TOOLS/TOOLSINVISIBLE"
+			"material" "TOOLS/TOOLSCLIP"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -773,7 +773,7 @@ world
 		{
 			"id" "527"
 			"plane" "(64 -64 -6) (-64 -64 -6) (-64 -64 0)"
-			"material" "TOOLS/TOOLSINVISIBLE"
+			"material" "TOOLS/TOOLSCLIP"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
