@@ -18,6 +18,5 @@
 > From here, it is converted to a BSP which can be read by the game.
 > This file is not editable by P2O.
 
-## Package format
-
+### Packages
 > See [packages](/packages.md) section.
