@@ -2,6 +2,7 @@
   "items":{
     "Turret":{
       "name":"Turret",
+      "description":"A thing that shoots players.",
       "icon":"turret.png";
       "instance":"turret.vmf",
       "itemInputs":{
@@ -19,6 +20,7 @@
     },
     "Floor Button":{
       "name":"Floor Button",
+      "description":"A button that is on the floor.",
       "icon":"button.png";
       "instance":"button.vmf",
       "itemInputs":{
@@ -37,7 +39,15 @@
   },
   "materials":{
     "myMaterial":{
-      "vtf":"myVTF.vtf"
+      "editoricon":"myMaterial.png",
+      "vtf":"myMaterial.vtf"
+    }
+  },
+  "styles":{
+    "My Style":{
+        "icon":"styleicon.png",
+        "description":"This is an example!",
+        "script":"myStyle.js"
     }
   }
 }

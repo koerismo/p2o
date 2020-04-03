@@ -44,7 +44,7 @@ function genVMF(pec) {
     out += vmf.genCube(baseid,x.scale,x.x,x.y,x.z)
     baseid += 1
   })
-  pec.StyleSolids.forEach(function(x){
+  pec.style.boxes.forEach(function(x){
     out += vmf.genCubeR(baseid,x.scale,x.x,x.y,x.z,x.faces)
     baseid += 1
   })
@@ -53,7 +53,7 @@ function genVMF(pec) {
     out += vmf.genEnt(baseid,packages[x.item[0]][x.item[1]].instance,[x.rot_x,x.rot_y,x.rot_z],[x.x,x.y,x.z])
     baseid += 1
   })
-  pec.StyleEnts.forEach(function(x){
+  pec.style.entities.forEach(function(x){
     out += vmf.genEntR(baseid,dictToKV(x))
     baseid += 1
   })
