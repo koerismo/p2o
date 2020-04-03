@@ -29,6 +29,7 @@ Packages
   "items":{
     "Turret":{ // this should be what you want the item to be named
       "name":"Turret", //same as above
+      "description":"A thing that shoots players.",
       "icon":"turret.png"; // packagename/editor/icons/turret.png
       "instance":"turret.vmf", // packagename/ingame/instances.turret.vmf
       "itemInputs":{
@@ -45,6 +46,7 @@ Packages
     },
     "Floor Button":{
       "name":"Floor Button",
+      "description":"A button that is on the floor.",
       "icon":"button.png";
       "instance":"button.vmf",
       "itemInputs":{
@@ -65,8 +67,9 @@ Packages
     }
   },
   "materials":{
-    "Rainbow":{
-      "vtf":"rainbow.vtf" // packagename/ingame/materials/rainbow.vtf
+    "myMaterial":{
+      "editoricon":"myMaterial.png",
+      "vtf":"myMaterial.vtf"
     }
   },
   "styles":{
