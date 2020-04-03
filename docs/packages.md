@@ -67,9 +67,9 @@ Packages
     }
   },
   "materials":{
-    "Rainbow":{
-      "editoricon":"rainbow.png",
-      "vtf":"rainbow.vtf" // packagename/ingame/materials/rainbow.vtf
+    "myMaterial":{
+      "editoricon":"myMaterial.png",
+      "vtf":"myMaterial.vtf"
     }
   },
   "styles":{
