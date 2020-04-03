@@ -1,6 +1,8 @@
 # P2O Package Format
 *this format may be subject to change throughout developement*
 
+*For information on making styles, see [styles](/docs/styles.md)*
+
 ## Folder Structure
 ```
 Packages
@@ -10,6 +12,7 @@ Packages
     │   ├───icons
     │   ├───materials
     │   ├───models
+    │   ├───scripts
     │   └───sounds
     └───ingame
         ├───instances
@@ -65,10 +68,16 @@ Packages
     "Rainbow":{
       "vtf":"rainbow.vtf" // packagename/ingame/materials/rainbow.vtf
     }
+  },
+  "styles":{
+    "My Style":{
+        "icon":"styleicon.png",
+        "description":"This is an example!",
+        "script":"myStyle.js"
+    }
   }
 }
 ```
-
 ## Inputs/Outputs
 Input/Output types
 | Type | Arguments |
