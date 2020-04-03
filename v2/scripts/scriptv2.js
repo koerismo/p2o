@@ -96,14 +96,14 @@ function onDocumentKeyUp(event) {
 
 function getSelectedObjects() {
   raycaster.setFromCamera( mouse, camera );
-  return raycaster.intersectObjects( scene.children );
+  return raycaster.intersectObjects( scene.children ).filter(function(x){return x.object.material[x.face.materialIndex] != 0});
 }
 
 function getMousePos() {
   raycaster.setFromCamera( mouse, camera );
-  let intlist = raycaster.intersectObjects( scene.children.filter(function(x){return x.name != "item"}) )
+  let intlist = raycaster.intersectObjects( scene.children.filter(function(x){return x.name != "item"}) ).filter(function(x){return x.object.material[x.face.materialIndex] != 0});
   if (intlist.length)
-    return intlist[0].point.divideScalar(gridSize).floor().multiplyScalar(gridSize).addScalar(gridSize/2);
+    return intlist[0].point.divideScalar(gridSize).ceil().multiplyScalar(gridSize)//.addScalar(gridSize/2);
 }
 
 function render() {
@@ -120,6 +120,20 @@ function calcMat(mat,x,y,z) {
     [0,mat][1*(y == -5)],
     [0,mat][1*(z == 5)],
     [0,mat][1*(z == -5)]
+  ]
+}
+
+function recalcMat(x,y,z) {
+  function getBlockAt(x,y,z) {
+    return scene.children.filter(function(a){return a.position.x == x && a.position.y == y && a.position.z == z}).length > 0
+  }
+  scene.children.filter(function(a){return a.position.x == x && a.position.y == y && a.position.z == z})[0].material = [
+    [0,mat][getBlockAt(x+gridSize,y,z)],
+    [mat,0][getBlockAt(x-gridSize,y,z)],
+    [mat,0][getBlockAt(x,y+gridSize,z)],
+    [mat,0][getBlockAt(x,y-gridSize,z)],
+    [mat,0][getBlockAt(x,y,z+gridSize)],
+    [mat,0][getBlockAt(x,y,z-gridSize)]
   ]
 }
 
@@ -251,14 +265,20 @@ function addTile(x,y,z,g,m) {
 
 function addVoxelFromSelection(intersect) {
   var voxel = new THREE.Mesh( cubeGeo, default_cube_mat );
-  console.log(intersect.face.normal)
-  voxel.position.copy( intersect.point ).add( intersect.face.normal );
+  console.log(intersect.face.normal,intersect.point)
+  voxel.position.copy( intersect.point ).sub( intersect.face.normal );
   voxel.position.divideScalar( gridSize ).floor().multiplyScalar( gridSize ).addScalar( gridSize/2 );
   voxel.castShadow = true;
   voxel.receiveShadow = true;
   voxel.matrixAutoUpdate  = false;
   voxel.updateMatrix();
   scene.add( voxel );
+  /*recalcMat(voxel.position.x-gridSize,voxel.position.y,voxel.position.z)
+  recalcMat(voxel.position.x+gridSize,voxel.position.y,voxel.position.z)
+  recalcMat(voxel.position.x,voxel.position.y-gridSize,voxel.position.z)
+  recalcMat(voxel.position.x,voxel.position.y+gridSize,voxel.position.z)
+  recalcMat(voxel.position.x,voxel.position.y,voxel.position.z-gridSize)
+  recalcMat(voxel.position.x,voxel.position.y,voxel.position.z+gridSize)*/
 }
 
 function getFace(intersect) {
