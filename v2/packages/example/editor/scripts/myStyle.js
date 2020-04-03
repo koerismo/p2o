@@ -1,4 +1,4 @@
-function executeStyle(l) {
+function stylePEC(l) {
   var l = level
   let xlist = level.Blocks.sort(function(a,b){return a.x > b.x})
   let minX = xlist[0]
@@ -23,18 +23,13 @@ function executeStyle(l) {
     (-64,64,-64) (64,-64,-128)
     */
   level.Blocks = level.Blocks.filter(function(x){return x.role.ceiling != 1 | x.role.floor | x.role.wall})
-  //x max
-  level.StyleSolids.push({max+64,minY+64,minZ-64,maxX+128,minY-64,maxZ+128,["tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw"]})
-  //x min
-  level.StyleSolids.push({minX-128,maxY+64,minZ-64,maxX-64,minX-64,maxZ+128,["tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw"]})
-  //y max
-  level.StyleSolids.push({minX-64,max+128,minZ-64,minX+64,maxY+64,maxZ+128,["tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw"]})
-  //y min
-  level.StyleSolids.push({maxX-64,minY-64,minZ-64,maxX+64,min-128,maxZ+128,["tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw"]})
-  //z max
-  level.StyleSolids.push({minX-64,maxY+64,maxZ+128,maxX+64,maxY-64,maxZ+192,["tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw"]})
-  //z min
-  level.StyleSolids.push({minX-64,minY+64,minZ-64,maxX+64,maxY-64,maxZ-128,["tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw"]})
+
+  level.StyleSolids.push({maxX+64,maxY+64,maxZ-64,maxX+128,minY-64,maxZ+128,["tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw"]})//x max
+  level.StyleSolids.push({minX-128,maxY+64,minZ-64,minX-64,minX-64,maxZ+128,["tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw"]})//x min
+  level.StyleSolids.push({minX-64,maxX+128,minZ-64,maxX+64,maxY+64,maxZ+128,["tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw"]})//y max
+  level.StyleSolids.push({maxX-64,minY-64,minZ-64,maxX+64,min-128,maxZ+128,["tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw"]})//y min
+  level.StyleSolids.push({minX-64,maxY+64,maxZ+128,maxX+64,maxY-64,maxZ+192,["tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw"]})//z max
+  level.StyleSolids.push({minX-64,maxY+64,minZ-64,maxX+64,minY-64,maxZ-128,["tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw"]})//z min
   for (var x = minX; x < maxX; x+= 256) {
     for (var z = minZ; y < maxZ; z+= 256) {
       level.StyleEnts.push({

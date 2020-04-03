@@ -5,6 +5,10 @@ function fm(ar,s,x,y,z) {
   return (ar[0]*s/2+x)+" "+(ar[1]*s/2+y)+" "+(ar[2]*s/2+z)
 }
 
+dictToKV(dic) {
+  return Object.keys(dic).map(function(key){return '\"'+key+'\" \"'+dictionary[key]+'\"'}).join("\n")
+}
+
 /*
 in-editor packages format
 {
@@ -19,9 +23,16 @@ in-editor packages format
 }
 */
 function compileAll(level) {
-  let compile0 = genGeometry(level.Blocks) //pea to pec
-  let compile1 = executeStyle(compile0) //stylize pec
-  let compile2 = genVMF(compile1) //pec to vmf
+  var compile0, compile1, compile2;
+  try {
+    compile0 = stylePEA(level.Blocks) // external wall compiler
+    compile2 = genVMF(compile0)
+  }
+  catch {
+    compile0 = genGeometry(level.Blocks) // internal wall compiler
+    compile1 = stylePEC(compile0) //stylize pec
+    compile2 = genVMF(compile1) //pec to vmf
+  }
   return compile2
 }
 
@@ -33,9 +44,17 @@ function genVMF(pec) {
     out += vmf.genCube(baseid,x.scale,x.x,x.y,x.z)
     baseid += 1
   })
+  pec.StyleSolids.forEach(function(x){
+    out += vmf.genCubeR(baseid,x.scale,x.x,x.y,x.z,x.faces)
+    baseid += 1
+  })
   out += "}\n"
   pec.Entities.forEach(function(x){
     out += vmf.genEnt(baseid,packages[x.item[0]][x.item[1]].instance,[x.rot_x,x.rot_y,x.rot_z],[x.x,x.y,x.z])
+    baseid += 1
+  })
+  pec.StyleEnts.forEach(function(x){
+    out += vmf.genEntR(baseid,dictToKV(x))
     baseid += 1
   })
   out += vmf.genFooter()
@@ -134,6 +153,14 @@ connections
 }
 }`
   },
+  genEntR:function(id,kv) {
+return `
+entity
+{
+"id" "`+id+`"
+`+kv+`
+}`
+  },
   genFooter:function() {
     return `
 cameras
@@ -171,7 +198,8 @@ function genGeometry(blocks) {
                     y:x.y+py*x.scale,
                     z:x.z+pz*x.scale,
                     scale:x.scale,
-                    roles:{wall:(py==0),floor:(py==-1),ceiling:(py==1)}
+                    roles:{wall:(py==0),floor:(py==-1),ceiling:(py==1)},
+                    sides:[{role:x.faces[1],texture:},{},{}]
                   })
         }}
       }

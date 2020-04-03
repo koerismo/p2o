@@ -5,42 +5,42 @@
       "x":-128,
       "y":0,
       "z":0,
-      "faces":{
-        "-x":"My Texture",
-        "+x":"My Texture",
-        "-y":"My Texture",
-        "+y":"My Texture",
-        "-z":"My Texture",
-        "+z":"My Texture"
-      },
+      "faces":[
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white"
+      ],
       "scale":128
     },
     {
       "x":0,
       "y":0,
       "z":0,
-      "faces":{
-        "-x":"My Texture",
-        "+x":"My Texture",
-        "-y":"My Texture",
-        "+y":"My Texture",
-        "-z":"My Texture",
-        "+z":"My Texture"
-      },
+      "faces":[
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white"
+      ],
       "scale":128
     },
     {
       "x":128,
       "y":0,
       "z":0,
-      "faces":{
-        "-x":"My Texture",
-        "+x":"My Texture",
-        "-y":"My Texture",
-        "+y":"My Texture",
-        "-z":"My Texture",
-        "+z":"My Texture"
-      },
+      "faces":[
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white"
+      ],
       "scale":128
     }
   ],
