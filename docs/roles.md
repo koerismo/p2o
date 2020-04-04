@@ -11,7 +11,8 @@ Blocks can have multiple roles. A block surrounded completely by air can be a ce
 * `floor`
 * `ceiling`
 
-## Surface Types *not implemented yet*
+## Surface Types
+*(not implemented yet)*
 Surface types are a lot like roles, but they account for portalability.
 Packages may implement their own surface types which can be applied from within the editor.
 
