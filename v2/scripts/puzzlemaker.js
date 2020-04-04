@@ -142,13 +142,13 @@ solid
 {
 "id" "`+id+`"
 `
-    let x1 = box[0]
-    let y1 = box[1]
-    let z1 = box[2]
-    let x2 = box[3]
-    let y2 = box[4]
-    let z2 = box[5]
-    console.log(box)
+    var x1 = box[0]
+    var y1 = box[1]
+    var z1 = box[2]
+    var x2 = box[3]
+    var y2 = box[4]
+    var z2 = box[5]
+    console.log(x1,y1,z1,x2,y2,z2)
     var faces = [
       [[x1,y2,z2],[x2,y2,z2],[x2,y1,z2]],
 			[[x1,y1,z1],[x2,y1,z1],[x2,y2,z1]],
