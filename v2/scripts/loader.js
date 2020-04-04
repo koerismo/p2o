@@ -71,9 +71,7 @@ function loadPackage(pkgname,callback) {
     })
     itembar.append(itemgroup)
     Object.keys(file.styles).forEach(function(x){
-      loadFile("packages/"+pkgname+"/editor/scripts/"+file.styles[x].script,function(y){
-        eval(y.response)
-      })
+        $.getScript("packages/"+pkgname+"/editor/scripts/"+file.styles[x].script,function(){})
     })
   })
 }
