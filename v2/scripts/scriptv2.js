@@ -13,8 +13,7 @@ mouse_object,
 keys = {},
 items,
 gridSize = 64,
-selected,
-action
+selected
 
 var selectionmat,
   hovering = {}

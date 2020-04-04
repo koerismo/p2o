@@ -1,40 +1,80 @@
 {
   "items":{
     "Turret":{
-      "name":"Turret",
       "description":"A thing that shoots players.",
-      "icon":"turret.png";
+      "icon":"turret.png",
+      "model":"turret.3ds",
       "instance":"turret.vmf",
       "itemInputs":{
         "Explode":{
           "type":"event",
-          "input":"instanceturretSelfDestructImmediately"
+          "input":"instance:turret;SelfDestructImmediately"
         }
       },
       "itemOutputs":{
       },
       "spawnRelay":"NULL",
       "entranceRelay":"NULL",
-      "exitRelay":"NULL",
-      "locked":false
+      "exitRelay":"NULL"
     },
     "Floor Button":{
-      "name":"Floor Button",
       "description":"A button that is on the floor.",
-      "icon":"button.png";
+      "icon":"button.png",
       "instance":"button.vmf",
       "itemInputs":{
       },
       "itemOutputs":{
         "On Pressed":{
           "type":"event",
-          "output":"instancefloor_buttonOnPressed"
+          "output":"instance:floor_button;OnPressed"
+        },
+        "On UnPressed":{
+          "type":"event",
+          "output":"instance:floor_button;OnUnPressed"
         }
       },
       "spawnRelay":"NULL",
       "entranceRelay":"NULL",
-      "exitRelay":"NULL",
-      "locked":false
+      "exitRelay":"NULL"
+    },
+    "Cube":{
+      "description":"A cube.",
+      "icon":"cube.png",
+      "model":"cube.3ds",
+      "instance":"cube.vmf",
+      "itemInputs":{
+      },
+      "itemOutputs":{
+      },
+      "spawnRelay":"NULL",
+      "entranceRelay":"NULL",
+      "exitRelay":"NULL"
+    },
+    "Spawn":{
+      "description":"Where the player spawns.",
+      "icon":"spawn.png",
+      "model":"spawn.3ds",
+      "instance":"spawn.vmf",
+      "itemInputs":{
+      },
+      "itemOutputs":{
+      },
+      "spawnRelay":"NULL",
+      "entranceRelay":"NULL",
+      "exitRelay":"NULL"
+    },
+    "Plastic Wall":{
+      "description":"A very nice decoration.",
+      "icon":"plastic_wall.png",
+      "model":"plastic_wall.3ds",
+      "instance":"plastic_wall.vmf",
+      "itemInputs":{
+      },
+      "itemOutputs":{
+      },
+      "spawnRelay":"NULL",
+      "entranceRelay":"NULL",
+      "exitRelay":"NULL"
     }
   },
   "materials":{

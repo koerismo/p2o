@@ -1,18 +1,58 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
+    <style>
+    #loader {
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+      left: 0;
+      top: 0;
+      background: #111;
+      z-index: 99;
+      display: flex;
+      opacity: 1;
+      transition: 0.2s linear;
+      flex-direction: column;
+    }
+    #loader_bar {
+      width: 150px;
+      height: 20px;
+      margin: 0 auto auto auto;
+      border: 2px solid #999;
+      border-radius: 100px;
+      background: linear-gradient(90deg,#999 50%,#000 50%);
+    }
+    #loader h3 {
+        margin: auto auto 10px auto;
+        display: block;
+        font-family: sans-serif;
+        color: #999;
+        font-weight: 100;
+    }
+
+    .loader {
+      opacity: 0 !Important;
+      z-index: -9999 !Important;
+    }
+  </style>
+    <script src="/scripts/jquery.min.js"></script>
+    <script src="/scripts/loader.js"></script>
     <link rel="stylesheet" type="text/css" href="/scripts/style.css">
     <meta charset="utf-8">
     <title>P2O</title>
   </head>
-  <body style="background: black;">
-    <div id='sidebar_left'>
+  <body style="background: black;" onload="beginLoad()">
+    <div class='loader' id='loader'>
+      <h3>Loading...</h3>
+      <div id='loader_bar'>
+      </div>
+    </div>
+    <div onmouseenter="mo_in()" onmouseleave="mo_out()" id='sidebar_left'>
     </div>
     <div id='sidebar_left_button'></div>
-    <script src="/scripts/jquery.min.js"></script>
     <script src="/scripts/three.js"></script>
     <script src="/scripts/puzzlemaker.js"></script>
     <script src="/scripts/scriptv2.js"></script>
-    <script src="/scripts/loader.js"></script>
   </body>
 </html>

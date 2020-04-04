@@ -1,4 +1,5 @@
 var packages = {};
+var action;
 
 function loadFile(url, callback) {
     var xhr = new XMLHttpRequest();
@@ -18,26 +19,35 @@ function loadFile(url, callback) {
     xhr.send(null);
 }
 
-var itembar = $("#sidebar_left")
 
-itembar.onmouseenter = function(){
-  console.log("bruh")
+var itembar;
+
+function mo_in(e){
   action = "toolbar"
 }
-itembar.onmouseleave = function(){
+function mo_out(e){
   action = "none"
 }
 
+function beginLoad(){
+itembar = $("#sidebar_left")
 console.log("retrieving packages...")
+var completedPkgs = 0;
 loadFile("packages.json",function(x){ //this file does not exist. When requested, the server should return a JSON formatted list of folders inside the packages folder
-  var pkglist = JSON.parse(x.response)
+  var pkglist;
+  eval("pkglist = "+x.response)
   console.log("found "+pkglist.length+" packages. Downloading...")
   pkglist.forEach(function(y,i){
     loadPackage(y,function(z){
       console.log("downloaded package "+i+"/"+pkglist.length)
+      completedPkgs += 1
+      if (completedPkgs == pkglist.length) {
+        setTimeout($("#loader")[0].classList.add("loader"),1000);
+      }
     })
   })
 })
+}
 
 function loadPackage(pkgname,callback) {
   loadFile("/packages/"+pkgname+"/package.json",function(x){
@@ -47,16 +57,23 @@ function loadPackage(pkgname,callback) {
     title.innerText = pkgname
     itembar.append(title)
 
-    let file = JSON.parse(x.responseText)
-
-    file.items.forEach(function(x){
-      loadFile("packages/"+pkgname+"/editor/"+x.model,function(x){
-        packages[pkgname][x.name]
+    var file;
+    eval("file = "+x.response)
+    packages[pkgname] = {"items":{},"styles":{}}
+    Object.keys(file.items).forEach(function(x){
+      packages[pkgname]["items"][x] = {}
+      loadFile("packages/"+pkgname+"/editor/models/"+file.items[x].model,function(y){
+        packages[pkgname]["items"][x].model = y
       })
       let im = document.createElement("IMG")
-      im.src = "packages/"+pkgname+"/editor/"+x.icon
+      im.src = "packages/"+pkgname+"/editor/icons/"+file.items[x].icon
       itemgroup.append(im)
     })
     itembar.append(itemgroup)
+    Object.keys(file.styles).forEach(function(x){
+      loadFile("packages/"+pkgname+"/editor/scripts/"+file.styles[x].script,function(y){
+        eval(y.response)
+      })
+    })
   })
 }

@@ -5,8 +5,8 @@ function fm(ar,s,x,y,z) {
   return (ar[0]*s/2+x)+" "+(ar[1]*s/2+y)+" "+(ar[2]*s/2+z)
 }
 
-dictToKV(dic) {
-  return Object.keys(dic).map(function(key){return '\"'+key+'\" \"'+dictionary[key]+'\"'}).join("\n")
+function dictToKV(dic) {
+  return Object.keys(dic).map(function(key){return '\"'+key+'\" \"'+dic[key]+'\"'}).join("\n")
 }
 
 /*
@@ -29,7 +29,7 @@ function compileAll(level) {
     compile2 = genVMF(compile0)
   }
   catch {
-    compile0 = genGeometry(level.Blocks) // internal wall compiler
+    compile0 = {Blocks:genGeometry(level.Blocks),Entities:level.Entities,style:{boxes:[],entities:[]}} // internal wall compiler
     compile1 = stylePEC(compile0) //stylize pec
     compile2 = genVMF(compile1) //pec to vmf
   }
@@ -45,7 +45,7 @@ function genVMF(pec) {
     baseid += 1
   })
   pec.style.boxes.forEach(function(x){
-    out += vmf.genCubeR(baseid,x.scale,x.x,x.y,x.z,x.faces)
+    out += vmf.genCubeR(baseid,x.box,x.faces)
     baseid += 1
   })
   out += "}\n"
@@ -136,6 +136,60 @@ editor
 }
 `
   },
+  genCubeR:function(id,box,sides){
+    var output = `
+solid
+{
+"id" "`+id+`"
+`
+    let x1 = box[0]
+    let y1 = box[1]
+    let z1 = box[2]
+    let x2 = box[3]
+    let y2 = box[4]
+    let z2 = box[5]
+    console.log(box)
+    var faces = [
+      [[x1,y2,z2],[x2,y2,z2],[x2,y1,z2]],
+			[[x1,y1,z1],[x2,y1,z1],[x2,y2,z1]],
+			[[x1,y2,z2],[x1,y1,z2],[x1,y1,z1]],
+			[[x2,y2,z1],[x2,y1,z1],[x2,y1,z2]],
+			[[x2,y2,z2],[x1,y2,z2],[x1,y2,z1]],
+			[[x2,y1,z1],[x1,y1,z1],[x1,y1,z2]]
+    ]
+    var uvs = [
+      [[1,0,0],[0,0,-1]],
+      [[1,0,0],[0,0,-1]],
+      [[0,1,0],[0,0,-1]],
+      [[0,1,0],[0,0,-1]],
+      [[1,0,0],[0,-1,0]],
+      [[1,0,0],[0,-1,0]]
+    ]
+    faces.forEach(function(n,i){
+let fce = `
+side
+{
+"id" "`+(i+id*6)+`"
+"plane" "(`+n[0].join(" ")+`) (`+n[1].join(" ")+`) (`+n[2].join(" ")+`)"
+"material" "`+sides[i]+`"
+"uaxis" "[`+uvs[i][0].join(" ")+` -256] 0.25"
+"vaxis" "[`+uvs[i][1].join(" ")+` -256] 0.25"
+"rotation" "0"
+"lightmapscale" "16"
+"smoothing_groups" "0"
+}`
+output += fce
+})
+return output+`
+editor
+{
+  "color" "0 212 241"
+  "visgroupshown" "1"
+  "visgroupautoshown" "1"
+}
+}
+`
+  },
   genEnt:function(id,inst,angles,pos,connections) {
 return `
 entity
@@ -198,8 +252,8 @@ function genGeometry(blocks) {
                     y:x.y+py*x.scale,
                     z:x.z+pz*x.scale,
                     scale:x.scale,
-                    roles:{wall:(py==0),floor:(py==-1),ceiling:(py==1)},
-                    sides:[{role:x.faces[1],texture:},{},{}]
+                    roles:{wall:((px!=0|py!=0)&&pz!=1),floor:(pz==-1),ceiling:(pz==1)}
+                    //sides:[{role:x.faces[1],texture:1},{},{}]
                   })
         }}
       }
