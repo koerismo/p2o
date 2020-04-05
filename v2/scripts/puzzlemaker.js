@@ -231,15 +231,22 @@ cordons
 function genGeometry(blocks) {
   var out = []
   function checkBlock(x,y,z,si) {
-    let pa = blocks.filter(function(a){
+    /*let pa = blocks.filter(function(a){
       return ((a.x+a.scale/2 > x-si/2 && a.y+a.scale/2 > y-si/2 && a.z+a.scale/2 > z-si/2) &&
       (a.x-a.scale/2 < x+si/2 && a.y-a.scale/2 < y+si/2 && a.z-a.scale/2 < z+si/2))
-    }).length > 0
+    }).length > 0*/
     let pb = out.filter(function(a){
       return ((a.x+a.scale/2 > x-si/2 && a.y+a.scale/2 > y-si/2 && a.z+a.scale/2 > z-si/2) &&
       (a.x-a.scale/2 < x+si/2 && a.y-a.scale/2 < y+si/2 && a.z-a.scale/2 < z+si/2))
     }).length > 0
-    return (pa||pb)
+    return (pb)
+  }
+  function checkAir(x,y,z,si) {
+    let pa = blocks.filter(function(a){
+      return ((a.x+a.scale/2 > x-si/2 && a.y+a.scale/2 > y-si/2 && a.z+a.scale/2 > z-si/2) &&
+      (a.x-a.scale/2 < x+si/2 && a.y-a.scale/2 < y+si/2 && a.z-a.scale/2 < z+si/2))
+    }).length > 0
+    return (pa)
   }
   let blk = blocks.sort(function(a,b) {return a.scale < b.scale})
   blk.forEach(function(x){
@@ -254,10 +261,10 @@ function genGeometry(blocks) {
                     scale:x.scale,
                     faces:[x.faces[1],x.faces[0],x.faces[3],x.faces[2],x.faces[5],x.faces[4]],
                     roles:{floor:checkBlock(x.x,x.y,x.z+x.scale,x.scale),ceiling:checkBlock(x.x,x.y,x.z-x.scale,x.scale),wall:(
-                      checkBlock(x.x+x.scale,x.y,x.z,x.scale) |
-                      checkBlock(x.x-x.scale,x.y,x.z,x.scale) |
-                      checkBlock(x.x,x.y+x.scale,x.z,x.scale) |
-                      checkBlock(x.x,x.y-x.scale,x.z,x.scale))
+                      checkAir(x.x+x.scale,x.y,x.z,x.scale) |
+                      checkAir(x.x-x.scale,x.y,x.z,x.scale) |
+                      checkAir(x.x,x.y+x.scale,x.z,x.scale) |
+                      checkAir(x.x,x.y-x.scale,x.z,x.scale))
                     }
                   })
         }}
@@ -271,7 +278,10 @@ function genGeometry(blocks) {
 function genConnections(level,it) {
   if (it.itemOutputs) {
     return Object.keys(it.itemOutputs).map(function(x){
+    	// TODO: input event and output are undefined when compiled
+	// get item info from package, get connection info from item info, get connection event
       let output_event = packages[it.item[0]].items[it.item[1]].itemOutputs[it.itemOutputs[x].event]
+      // get item from level using index provided by output, get item info from package, get connection info and input event
       let output = packages[level.Entities[x].item[0]].items[level.Entities[x].item[1]].itemInputs[it.itemOutputs[x].input]
     	return '\"'+output_event+'\" \"ITEM_'+x+','+output+',,0,-1\"'
     }).join("\n")
