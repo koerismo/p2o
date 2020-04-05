@@ -70,15 +70,15 @@
           {"event":"On UnPressed","output":"Explode"}
         ]
       }
-    },
-    {
-    "item":["example","Turret"],
-    "x":128,
-    "y":0,
-    "z":0,
-    "rot_x":0,
-    "rot_y":0,
-    "rot_z":0
-    }
+      },
+      {
+      "item":["example","Turret"],
+      "x":128,
+      "y":0,
+      "z":0,
+      "rot_x":0,
+      "rot_y":0,
+      "rot_z":0
+      }
   ]
 }

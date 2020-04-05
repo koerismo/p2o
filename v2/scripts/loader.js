@@ -65,6 +65,9 @@ function loadPackage(pkgname,callback) {
       loadFile("packages/"+pkgname+"/editor/models/"+file.items[x].model,function(y){
         packages[pkgname]["items"][x].model = y
       })
+      packages[pkgname].items[x].itemOutputs = file.items[x].itemOutputs
+      packages[pkgname].items[x].itemInputs = file.items[x].itemInputs
+      packages[pkgname].items[x].instance = file.items[x].instance
       let im = document.createElement("IMG")
       im.src = "packages/"+pkgname+"/editor/icons/"+file.items[x].icon
       itemgroup.append(im)

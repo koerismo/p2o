@@ -25,7 +25,7 @@ in-editor packages format
 function compileAll(level) {
   var compile0, compile1, compile2;
   try {
-    compile0 = stylePEA(level.Blocks) // external wall compiler
+    compile0 = stylePEA(level) // external wall compiler
     compile2 = genVMF(compile0)
   }
   catch {
@@ -49,8 +49,8 @@ function genVMF(pec) {
     baseid += 1
   })
   out += "}\n"
-  pec.Entities.forEach(function(x){
-    out += vmf.genEnt(baseid,packages[x.item[0]][x.item[1]].instance,[x.rot_x,x.rot_y,x.rot_z],[x.x,x.y,x.z])
+  pec.Entities.forEach(function(x,i){
+    out += vmf.genEnt(baseid,x,[x.rot_x,x.rot_y,x.rot_z],[x.x,x.y,x.z],i,pec)
     baseid += 1
   })
   pec.style.entities.forEach(function(x){
@@ -142,12 +142,12 @@ solid
 {
 "id" "`+id+`"
 `
-    var x1 = box[0]
-    var y1 = box[1]
-    var z1 = box[2]
-    var x2 = box[3]
-    var y2 = box[4]
-    var z2 = box[5]
+    var x1 = Math.min(box[0],box[3])
+    var y1 = Math.min(box[1],box[4])
+    var z1 = Math.min(box[2],box[5])
+    var x2 = Math.max(box[0],box[3])
+    var y2 = Math.max(box[1],box[4])
+    var z2 = Math.max(box[2],box[5])
     console.log(x1,y1,z1,x2,y2,z2)
     var faces = [
       [[x1,y2,z2],[x2,y2,z2],[x2,y1,z2]],
@@ -190,20 +190,20 @@ editor
 }
 `
   },
-  genEnt:function(id,inst,angles,pos,connections) {
+  genEnt:function(id,it,angles,pos,itemid,level) {
 return `
 entity
 {
 "id" "`+id+`"
 "classname" "func_instance"
 "angles" "`+angles.join(" ")+`"
-"file" "`+inst+`"
+"file" "`+packages[it.item[0]].items[it.item[1]].instance+`"
 "fixup_style" "0"
 "origin" "`+pos.join(" ")+`"
-"targetname" "ITEM_`+id+`"
+"targetname" "ITEM_`+itemid+`"
 connections
 {
-`+genConnections()+`
+`+genConnections(level,it)+`
 }
 }`
   },
@@ -252,13 +252,29 @@ function genGeometry(blocks) {
                     y:x.y+py*x.scale,
                     z:x.z+pz*x.scale,
                     scale:x.scale,
-                    roles:{wall:((px!=0|py!=0)&&pz!=1),floor:(pz==-1),ceiling:(pz==1)}
-                    //sides:[{role:x.faces[1],texture:1},{},{}]
+                    faces:[x.faces[1],x.faces[0],x.faces[3],x.faces[2],x.faces[5],x.faces[4]],
+                    roles:{floor:checkBlock(x.x,x.y,x.z+x.scale,x.scale),ceiling:checkBlock(x.x,x.y,x.z-x.scale,x.scale),wall:(
+                      checkBlock(x.x+x.scale,x.y,x.z,x.scale) |
+                      checkBlock(x.x-x.scale,x.y,x.z,x.scale) |
+                      checkBlock(x.x,x.y+x.scale,x.z,x.scale) |
+                      checkBlock(x.x,x.y-x.scale,x.z,x.scale))
+                    }
                   })
         }}
       }
     }
   })
+
   return out
 }
 //genVMF({Blocks:[{x:0,y:0,z:0,scale:128},{x:0,y:0,z:0,scale:128}],Entities:[]})
+function genConnections(level,it) {
+  if (it.itemOutputs) {
+    return Object.keys(it.itemOutputs).map(function(x){
+      let output_event = packages[it.item[0]].items[it.item[1]].itemOutputs[it.itemOutputs[x].event]
+      let output = packages[level.Entities[x].item[0]].items[level.Entities[x].item[1]].itemInputs[it.itemOutputs[x].input]
+    	return '\"'+output_event+'\" \"ITEM_'+x+','+output+',,0,-1\"'
+    }).join("\n")
+  }
+  return "\n"
+}

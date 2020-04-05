@@ -22,14 +22,14 @@ function stylePEC(l) {
     (-64,64,192) (64,-64,128)
     (-64,64,-64) (64,-64,-128)
     */
-  level.Blocks = level.Blocks.filter(function(x){return x.roles.ceiling != 1 | x.roles.wall == 1})
-  console.log(minX,minY,minZ,maxX,maxY,maxZ)
-  level.style.boxes.push({box:[maxX+64,maxY+64,maxZ-64,maxX+128,minY-64,maxZ+128],faces:["tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw"]})//x max
-  level.style.boxes.push({box:[minX-128,maxY+64,minZ-64,minX-64,minX-64,maxZ+128],faces:["tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw"]})//x min
-  level.style.boxes.push({box:[minX-64,maxX+128,minZ-64,maxX+64,maxY+64,maxZ+128],faces:["tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw"]})//y max
-  level.style.boxes.push({box:[maxX-64,minY-64,minZ-64,maxX+64,minY-128,maxZ+128],faces:["tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw"]})//y min
-  level.style.boxes.push({box:[minX-64,maxY+64,maxZ+128,maxX+64,maxY-64,maxZ+192],faces:["tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw"]})//z max
-  level.style.boxes.push({box:[minX-64,maxY+64,minZ-64,maxX+64,minY-64,maxZ-128],faces:["tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw","tools/nodraw"]})//z min
+  level.Blocks = level.Blocks.filter(function(x){return x.roles.ceiling != 1})
+  var pwall = ["props/plasticwall003a","props/plasticwall003a","props/plasticwall003a","props/plasticwall003a","props/plasticwall003a","props/plasticwall003a"]
+  level.style.boxes.push({box:[minX-256,minY-256,maxZ+640,maxX+256,maxY+256,maxZ+704],faces:pwall})//top
+  level.style.boxes.push({box:[minX-256,minY-256,minZ-256,maxX+256,maxY+256,minZ-320],faces:pwall})//bottom
+  level.style.boxes.push({box:[minX-320,minY-256,minZ-256,minX-256,maxY+256,maxZ+640],faces:pwall})//x
+  level.style.boxes.push({box:[maxX+256,minY-256,minZ-256,maxX+320,maxY+256,maxZ+640],faces:pwall})
+  level.style.boxes.push({box:[minX-256,minY-320,minZ-256,maxX+256,minY-256,maxZ+640],faces:pwall})//y
+  level.style.boxes.push({box:[minX-256,maxY+256,minZ-256,maxX+256,maxY+320,maxZ+640],faces:pwall})
   level.style.entities.push({
     "classname":"prop_static",
     "angles":"0 90 0",
@@ -63,13 +63,13 @@ function stylePEC(l) {
       "classname":"prop_static",
       "angles":"0 90 0",
       "model":"models/props_underground/truss_64_256.mdl",
-      "origin":((maxX-64)+" "+(maxY-64)+" "+z)
+      "origin":((maxX-64)+" "+(maxY+64)+" "+z)
     })
     level.style.entities.push({
       "classname":"prop_static",
       "angles":"0 90 0",
       "model":"models/props_underground/truss_64_256.mdl",
-      "origin":((minX-64)+" "+(maxY-64)+" "+z)
+      "origin":((minX-64)+" "+(maxY+64)+" "+z)
     })
   }
   return level
