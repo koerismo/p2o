@@ -15,11 +15,15 @@
       },
       "spawnRelay":"NULL",
       "entranceRelay":"NULL",
-      "exitRelay":"NULL"
+      "exitRelay":"NULL",
+      "style":"ANY",
+      "category":"Item"
     },
     "Floor Button":{
       "description":"A button that is on the floor.",
       "icon":"button.png",
+      "model":"floor_button.3ds",
+      "texture":"floor_button.png",
       "instance":"button.vmf",
       "itemInputs":{
       },
@@ -35,12 +39,15 @@
       },
       "spawnRelay":"NULL",
       "entranceRelay":"NULL",
-      "exitRelay":"NULL"
+      "exitRelay":"NULL",
+      "required":"ANY",
+      "category":"Item"
     },
     "Cube":{
       "description":"A cube.",
       "icon":"cube.png",
       "model":"cube.3ds",
+      "texture":"cube.png",
       "instance":"cube.vmf",
       "itemInputs":{
       },
@@ -48,7 +55,9 @@
       },
       "spawnRelay":"NULL",
       "entranceRelay":"NULL",
-      "exitRelay":"NULL"
+      "exitRelay":"NULL",
+      "style":"ANY",
+      "category":"Item"
     },
     "Spawn":{
       "description":"Where the player spawns.",
@@ -61,12 +70,15 @@
       },
       "spawnRelay":"NULL",
       "entranceRelay":"NULL",
-      "exitRelay":"NULL"
+      "exitRelay":"NULL",
+      "style":"ANY",
+      "category":"Item"
     },
     "Plastic Wall":{
       "description":"A very nice decoration.",
       "icon":"plastic_wall.png",
       "model":"plastic_wall.3ds",
+      "texture":"plastic_wall.png",
       "instance":"plastic_wall.vmf",
       "itemInputs":{
       },
@@ -74,7 +86,9 @@
       },
       "spawnRelay":"NULL",
       "entranceRelay":"NULL",
-      "exitRelay":"NULL"
+      "exitRelay":"NULL",
+      "style":[["example","My Style"]],
+      "category":"Deco"
     }
   },
   "materials":{

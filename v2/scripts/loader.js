@@ -1,7 +1,7 @@
 var packages = {};
 var action;
-var itemgroup, stylegroup;
-var bar_sort = "package"
+var itemgroup;
+var bar_sort = ""
 
 function loadFile(url, callback,call_err) {
     var xhr = new XMLHttpRequest();
@@ -44,16 +44,29 @@ function compileLevel(lvl) {
   }
   xhr.open("POST", "/compile", true);
   xhr.setRequestHeader("data", JSON.stringify({pea:lvl}));
-  xhr.send(""); 
+  xhr.send("");
+}
+
+function safeAdd(k,v) {
+  if (itemgroup[k] == undefined)
+    itemgroup[k] = document.createElement("DIV")
+  itemgroup[k].append(v)
+}
+
+function additemstobar() {
+  Object.keys(itemgroup).forEach(function(x){
+    let title = document.createElement("H1")
+    title.innerText = x
+    itembar.append(title)
+    itembar.append(itemgroup[x])
+  })
 }
 
 function beginLoad(){
 var errcount = 0;
 itembar = $("#sidebar_left")
-if (bar_sort == "type") {
-  itemgroup = document.createElement("DIV")
-  stylegroup = document.createElement("DIV")
-}
+itemgroup = {}
+
 console.log("retrieving packages...")
 var completedPkgs = 0;
 loadFile("packages.json",function(x){ //this file does not exist. When requested, the server should return a JSON formatted list of folders inside the packages folder
@@ -67,10 +80,7 @@ loadFile("packages.json",function(x){ //this file does not exist. When requested
         if (completedPkgs == pkglist.length) {
           console.log("finished downloading packages with "+errcount+" skipped")
           setTimeout($("#loader")[0].classList.add("loader"),1000);
-          if (bar_sort == "type") {
-            itembar.append(stylegroup)
-            itembar.append(itemgroup)
-          }
+          additemstobar()
         }
       },function(x){
         errcount++
@@ -79,10 +89,7 @@ loadFile("packages.json",function(x){ //this file does not exist. When requested
         if (completedPkgs == pkglist.length) {
             console.log("finished downloading packages with "+errcount+" skipped")
             setTimeout($("#loader")[0].classList.add("loader"),1000);
-            if (bar_sort == "type") {
-              itembar.append(stylegroup)
-              itembar.append(itemgroup)
-            }
+            additemstobar()
         }
       })
   })
@@ -91,13 +98,6 @@ loadFile("packages.json",function(x){ //this file does not exist. When requested
 
 function loadPackage(pkgname,callback,err) {
   loadFile("/packages/"+pkgname+"/package.json",function(x){
-    if (bar_sort == "package") {
-      itemgroup = document.createElement("DIV")
-      stylegroup = document.createElement("DIV")
-      let title = document.createElement("H1")
-      title.innerText = pkgname
-      itembar.append(title)
-    }
     var file;
     eval("file = "+x.response)
     packages[pkgname] = {"items":{},"styles":{}}
@@ -110,21 +110,26 @@ function loadPackage(pkgname,callback,err) {
       packages[pkgname].items[x].itemInputs = file.items[x].itemInputs
       let im = document.createElement("IMG")
       im.src = "packages/"+pkgname+"/editor/icons/"+file.items[x].icon
-      im.title = Object.keys(file.items)[i]
-      itemgroup.append(im)
+      im.title = x
+      im.setAttribute("data-item","['"+pkgname+"','"+x+"']")
+      im.ondragstart = function(){console.log(this.title)}
+      if (bar_sort == "package")
+        safeAdd(pkgname,im)
+      else
+        safeAdd(file.items[x].category,im)
     })
-    if (bar_sort == "package")
-      itembar.append(itemgroup)
     Object.keys(file.styles).forEach(function(x,i){
       packages[pkgname].styles[x] = {}
       let im = document.createElement("IMG")
       im.src = "packages/"+pkgname+"/editor/icons/"+file.styles[x].icon
-      im.title = Object.keys(file.styles)[i]
-      stylegroup.append(im)
+      im.title = x
+      im.setAttribute("data-item","['"+pkgname+"','"+x+"']")
+      im.ondragstart = function(){console.log(this.title)}
+      if (bar_sort == "package")
+        safeAdd(pkgname,im)
+      else
+        safeAdd("Style",im)
     })
-    if (bar_sort == "package") {
-      itembar.append(stylegroup)
-    }
     callback()
   },function(e){
     err(e)
