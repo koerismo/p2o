@@ -35,7 +35,8 @@ http.createServer(function (req, res) {
   else if (req.url == "/compile") {
     console.log(req.headers)
     try {
-      let lvl = pz.compileAll(JSON.parse(req.headers.data).pea)
+      let headers = JSON.parse(req.headers.data)
+      let lvl = pz.compileAll(headers.pea,headers.style)
       fs.writeFile(__dirname+"/../compile/level.vmf",lvl,function(a){
       if (a) {
         console.log("Error when attempting to write to file.")
@@ -60,3 +61,11 @@ http.createServer(function (req, res) {
     res.end(""); //end the response
   }
 }).listen(8080); //the server object listens on port 8080
+
+
+function saveCompile(fn,fl,ending) {
+  fs.writeFile(__dirname+"/../compile/"+fn+"."+ending,fl,function(err){
+    if (err)
+    console.log("Failed to save compiled file "+fn+ending)
+  })
+}

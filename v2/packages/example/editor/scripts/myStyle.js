@@ -1,4 +1,4 @@
-function stylePEC(l) {
+exports.stylePEC = function(l) {
   var level = l
   let xlist = level.Blocks.sort(function(a,b){return a.x > b.x})
   let minX = xlist[0].x-xlist[0].scale/2
@@ -73,4 +73,15 @@ function stylePEC(l) {
     })
   }
   return level
+}
+
+exports.getRandomTexture = function(e) {
+  switch(e,x,y,z,s) {
+    case "black_wall":
+      return ["METAL/BLACK_WALL_METAL_002B","METAL/BLACK_WALL_METAL_004A","PROPS/PLASTICWALL002A","METAL/BLACK_WALL_METAL_002E","METAL/BLACK_WALL_METAL_004C","METAL/BLACK_WALL_METAL_004B"][Math.round(Math.random()*5)]
+    case "black_floor":
+      return ["METAL/BLACK_FLOOR_METAL_001A","METAL/BLACK_WALL_METAL_004B","METAL/BLACK_FLOOR_METAL_001D","METAL/BLACK_FLOOR_METAL_001A","METAL/BLACK_FLOOR_METAL_001A","METAL/BLACK_FLOOR_METAL_001C"][Math.round(Math.random()*5)]
+    case "black_ceil":
+      return ["METAL/BLACK_CEILING_METAL_001A","METAL/BLACK_CEILING_METAL_001A","PROPS/PLASTICWALL002A","ANIM_WP/FRAMEWORK/BACKPANELS","METAL/BLACK_CEILING_METAL_001A","ANIM_WP/FRAMEWORK/BACKPANELS_COLOR01"][Math.round(Math.random()*5)]
+  }
 }
