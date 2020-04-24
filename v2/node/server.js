@@ -1,6 +1,7 @@
 var http = require('http');
 var fs = require('fs');
-var nrc = require('node-run-cmd');
+var cp = require('child_process');
+var pz = require(__dirname+'/../scripts/puzzlemaker.js')
 
 //create a server object:
 http.createServer(function (req, res) {
@@ -25,25 +26,37 @@ http.createServer(function (req, res) {
   else if (req.url.startsWith("/packages/") | req.url.startsWith("/scripts/") | req.url.startsWith("/levels/")) {
     fs.readFile(__dirname+"/.."+req.url,function(a,b){
       if (a)
-        res.write('0')
+        res.writeHead(404, {'Content-Type': 'text/html'})
       else
         res.write(b)
       res.end();
     })
   }
   else if (req.url == "/compile") {
-    console.log(req)
-    fs.writeFile(__dirname+"/../compile/level.vmf","this_is_a_bruh",function(a){
-      if (a)
+    console.log(req.headers)
+    try {
+      let lvl = pz.compileAll(JSON.parse(req.headers.data).pea)
+      fs.writeFile(__dirname+"/../compile/level.vmf",lvl,function(a){
+      if (a) {
         console.log("Error when attempting to write to file.")
+        res.end(0)
+      }
       else {
         //nrc.run("%programfiles(x86)%\\Steam\\steamapps\\common\\Portal 2\\bin\\vbsp.exe \""+__dirname+"/../compile/level.vmf\"");
-        nrc.run("F:\\Steam\\steamapps\\common\\Portal 2\\in\\vbsp_original.exe \""+__dirname+"/../compile/level.vmf\""); // MUST DO: make custom directories
+        cp("F:\\Steam\\steamapps\\common\\Portal 2\\in\\vbsp_original.exe \""+__dirname+"/../compile/level.vmf\"",function(er,out,err){
+          res.end(1)
+        }); // MUST DO: make custom directories
       }
     })
+    }
+    catch(e) {
+      console.log("Unexpected error: "+e)
+      res.end(0)
+    }
   }
   else {
-    res.write('Hello World!'); //write a response to the client
-    res.end(); //end the response
+    res.writeHead(404, {'Content-Type': 'text/html'});
+    //res.write('Hello World!'); //write a response to the client
+    res.end(""); //end the response
   }
 }).listen(8080); //the server object listens on port 8080

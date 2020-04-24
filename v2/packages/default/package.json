@@ -1,0 +1,13 @@
+{
+  "items":{
+  },
+  "materials":{
+  },
+  "styles":{
+    "Clean":{
+        "icon":"clean.png",
+        "description":"Clean style.",
+        "script":"Clean.js",
+    }
+  }
+}

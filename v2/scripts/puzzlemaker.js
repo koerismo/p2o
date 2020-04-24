@@ -22,16 +22,21 @@ in-editor packages format
   }
 }
 */
-function compileAll(level) {
+exports.compileAll = function(level) {
   var compile0, compile1, compile2;
   try {
     compile0 = stylePEA(level) // external wall compiler
+    console.log("generated PEC")
     compile2 = genVMF(compile0)
+    console.log("generated VMF")
   }
   catch {
     compile0 = {Blocks:genGeometry(level.Blocks),Entities:level.Entities,style:{boxes:[],entities:[]}} // internal wall compiler
+    console.log("generated PEC")
     compile1 = stylePEC(compile0) //stylize pec
+    console.log("stylized PEC")
     compile2 = genVMF(compile1) //pec to vmf
+    console.log("generated VMF")
   }
   return compile2
 }
