@@ -30,12 +30,33 @@
         color: #999;
         font-weight: 100;
     }
+    #menus {
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 3;
+      display:flex;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    #menus > div {
+      margin: auto;
+      background: #222;
+      color: white;
+      font-family: sans-serif;
+    }
 
     .loader {
       opacity: 0 !Important;
       z-index: -9999 !Important;
     }
   </style>
+    <script>
+      function beginLoad() {
+        alert("This page will not run correctly when loaded by file.")
+      }
+    </script>
     <script src="/scripts/jquery.min.js"></script>
     <script src="/scripts/loader.js"></script>
     <link rel="stylesheet" type="text/css" href="/scripts/style.css">
@@ -43,6 +64,37 @@
     <title>P2O</title>
   </head>
   <body style="background: black;" onload="beginLoad()">
+    <div id='menus'>
+      <div id='menu-levels'>
+        <h3>Levels</h3>
+        <ul>
+          <li><a>S </a>My Level</li>
+          <li><a>S </a>My Level</li>
+          <li><a>S </a>My Level</li>
+          <li><a>S </a>My Level</li>
+          <li><a>S </a>My Level</li>
+          <li><a>S </a>My Level</li>
+          <li><a>S </a>My Level</li>
+          <li><a>S </a>My Level</li>
+          <li><a>S </a>My Level</li>
+          <li><a>S </a>My Level</li>
+          <li><a>S </a>My Level</li>
+          <li><a>S </a>My Level</li>
+          <li><a>S </a>My Level</li>
+          <li><a>S </a>My Level</li>
+          <li><a>S </a>My Level</li>
+          <li><a>S </a>My Level</li>
+        </ul>
+        <img src="/">
+        <textarea></textarea>
+        <span id='levels-btn-holder'>
+          <a id='levels-btn-delete'>Delete</a>
+          <a id='levels-btn-duplicate'>Duplicate</a>
+          <a id='levels-btn-play'>Play</a>
+          <a id='levels-btn-edit'>Edit</a>
+        </span>
+      </div>
+    </div>
     <div class='loader' id='loader'>
       <h3>Loading...</h3>
       <div id='loader_bar'>

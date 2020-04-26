@@ -33,7 +33,7 @@ function mo_out(e){
   action = "none"
 }
 
-function compileLevel(lvl) {
+function compileLevel(lvl,sty) {
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -43,7 +43,7 @@ function compileLevel(lvl) {
     }
   }
   xhr.open("POST", "/compile", true);
-  xhr.setRequestHeader("data", JSON.stringify({pea:lvl}));
+  xhr.setRequestHeader("data", JSON.stringify({pea:lvl,style:sty}));
   xhr.send(""); 
 }
 
