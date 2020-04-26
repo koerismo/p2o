@@ -36,7 +36,7 @@ http.createServer(function (req, res) {
     console.log(req.headers)
     try {
       let headers = JSON.parse(req.headers.data)
-      let lvl = pz.compileAll(headers.pea,headers.style)
+      let lvl = pz.compileAll(headers.pea,__dirname+'/../packages/example/editor/scripts/myStyle.js') //TEMPORARY FIX UNTIL I FIGURE OUT A SOLUTION
       fs.writeFile(__dirname+"/../compile/level.vmf",lvl,function(a){
       if (a) {
         console.log("Error when attempting to write to file.")
