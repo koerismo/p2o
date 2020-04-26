@@ -2,7 +2,6 @@
 
 ### Requirements:
 * node.js (LTS Recommended)
-* node `node-run-cmd` library
 * node `fs` library
 
 ### How to run:

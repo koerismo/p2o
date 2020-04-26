@@ -13,7 +13,11 @@ mouse_object,
 keys = {},
 items,
 gridSize = 64,
-selected
+selected,
+mat,
+itemmat,
+geometry,
+movespeed = 7
 
 var selectionmat,
   hovering = {}
@@ -60,6 +64,19 @@ function onDocumentMouseDown(event) {
     pointer_lock()
 
   }
+}
+
+function makeItem() {
+  var item = new THREE.Mesh( geometry, itemmat );
+  item.name = "item"
+  item.position.set(0,0,0)
+  scene.add( item );
+  item.updateMatrix();
+  action = "holding_object"
+  holding_object = item
+  let mp = getMousePos()
+  if (mp)
+    moveObjectToCursor(holding_object,mp)
 }
 
 function onDocumentMouseUp(event) {
@@ -138,16 +155,16 @@ function recalcMat(x,y,z) {
 
 function animate() {
   if (keys[87]) {
-    moveForward(5)
+    moveForward(movespeed)
   }
   if (keys[83]) {
-    moveForward(-5)
+    moveForward(-movespeed)
   }
   if (keys[68]) {
-    moveRight(5)
+    moveRight(movespeed)
   }
   if (keys[65]) {
-    moveRight(-5)
+    moveRight(-movespeed)
   }
   requestAnimationFrame( animate );
   //controls.update(); // only required if controls.enableDamping = true, or if controls.autoRotate = true
@@ -185,8 +202,9 @@ function init() {
 
   //model_loader = new THREE.OBJLoader()
 
-  var geometry = new THREE.SphereBufferGeometry( 32 );
+  geometry = new THREE.SphereBufferGeometry( 32 );
   mat = new THREE.MeshPhysicalMaterial( {map: diffuseTex} );
+  itemmat = new THREE.MeshPhysicalMaterial( {color: "red"} );
   mat.side = THREE.BackSide
   mat.shadowSide = THREE.BackSide
   cubeGeo = new THREE.BoxGeometry( gridSize, gridSize, gridSize);
@@ -200,18 +218,18 @@ function init() {
     }
   }
 
-  var voxel = new THREE.Mesh( geometry, mat );
-  voxel.name = "item"
-  scene.add( voxel );
-  var light = new THREE.PointLight( "#fff", 1, 500 );
-  voxel.castShadow = false;
-  light.castShadow = true;
-  voxel.add(light)
-  light.castShadow = true;
-	light.shadow.camera.near = 8;
-	light.shadow.camera.far = 30;
-	light.shadow.mapSize.width = 1024;
-	light.shadow.mapSize.height = 1024;
+  var item = new THREE.Mesh( geometry, itemmat );
+  item.name = "item"
+  scene.add( item );
+  //var light = new THREE.PointLight( "#fff", 1, 500 );
+  item.castShadow = true;
+  //light.castShadow = true;
+  //item.add(light)
+  //light.castShadow = true;
+	//light.shadow.camera.near = 8;
+	//light.shadow.camera.far = 30;
+	//light.shadow.mapSize.width = 1024;
+	//light.shadow.mapSize.height = 1024;
   //light.position.set( 50, 50, 50 );
 
   renderer = new THREE.WebGLRenderer( { antialias: true } )
@@ -229,6 +247,12 @@ function init() {
   document.addEventListener( 'mousedown', onDocumentMouseDown, false );
   document.addEventListener( 'keydown', onDocumentKeyDown, false );
   document.addEventListener( 'keyup', onDocumentKeyUp, false );
+  renderer.domElement.ondrop = function(){
+    console.log("drag")
+    if (item_dragging != undefined) {
+      makeItem()
+    }
+  }
 }
 
 //code modified from PointerLockControls.js to allow vertical flying

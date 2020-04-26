@@ -1,6 +1,4 @@
-
 //"instance:floor_button;OnUnPressed" "``,instance:turret;SelfDestructImmediately,,0,-1"
-
 function fm(ar,s,x,y,z) {
   return (ar[0]*s/2+x)+" "+(ar[1]*s/2+y)+" "+(ar[2]*s/2+z)
 }
@@ -22,20 +20,25 @@ in-editor packages format
   }
 }
 */
-exports.compileAll = function(level) {
+exports.compileAll = function(level,style) {
+  var as = require(style)
   var compile0, compile1, compile2;
   try {
-    compile0 = stylePEA(level) // external wall compiler
+    compile0 = as.stylePEA(level) // external wall compiler
+    saveCompile("compiled",compile0,"pec")
     console.log("generated PEC")
     compile2 = genVMF(compile0)
+    saveCompile("compiled",compile2,"vmf")
     console.log("generated VMF")
   }
   catch {
     compile0 = {Blocks:genGeometry(level.Blocks),Entities:level.Entities,style:{boxes:[],entities:[]}} // internal wall compiler
     console.log("generated PEC")
-    compile1 = stylePEC(compile0) //stylize pec
+    compile1 = as.stylePEC(compile0) //stylize pec
     console.log("stylized PEC")
+    saveCompile("compiled",compile2,"pec")
     compile2 = genVMF(compile1) //pec to vmf
+    saveCompile("compiled",compile2,"vmf")
     console.log("generated VMF")
   }
   return compile2
@@ -46,7 +49,11 @@ function genVMF(pec) {
   var out = "";
   out += vmf.genHead()
   pec.Blocks.forEach(function(x){
-    out += vmf.genCube(baseid,x.scale,x.x,x.y,x.z)
+    out += vmf.genCube(baseid,x.scale,x.x,x.y,x.z,
+      x.faces.map(function(e,r){
+        return as.getRandomTexture(e,x.x,x.y,x.z,r)
+      })
+    )
     baseid += 1
   })
   pec.style.boxes.forEach(function(x){
@@ -93,7 +100,7 @@ world
 `
     return hde
   },
-  genCube:function(id,s,x,y,z){
+  genCube:function(id,s,x,y,z,mats){
     var output = `
 solid
 {
@@ -116,7 +123,7 @@ solid
       [[1,0,0],[0,-1,0]]
     ]
     faces.forEach(function(n,i){
-let mats = ['metal/black_wall_metal_002e','metal/black_wall_metal_002e','metal/black_wall_metal_002e','metal/black_wall_metal_002e','metal/black_floor_metal_001a','metal/black_floor_metal_001a']
+//let mats = ['metal/black_wall_metal_002e','metal/black_wall_metal_002e','metal/black_wall_metal_002e','metal/black_wall_metal_002e','metal/black_floor_metal_001a','metal/black_floor_metal_001a']
 let fce = `
 side
 {
@@ -264,7 +271,7 @@ function genGeometry(blocks) {
                     y:x.y+py*x.scale,
                     z:x.z+pz*x.scale,
                     scale:x.scale,
-                    faces:[x.faces[1],x.faces[0],x.faces[3],x.faces[2],x.faces[5],x.faces[4]],
+                    faces:[x.faces[1]+"_wall",x.faces[0]+"_wall",x.faces[3]+"_wall",x.faces[2]+"_wall",x.faces[5]+"_floor",x.faces[4]+"_ceil"],
                     roles:{floor:checkBlock(x.x,x.y,x.z+x.scale,x.scale),ceiling:checkBlock(x.x,x.y,x.z-x.scale,x.scale),wall:(
                       checkAir(x.x+x.scale,x.y,x.z,x.scale) |
                       checkAir(x.x-x.scale,x.y,x.z,x.scale) |

@@ -18,6 +18,7 @@ canvas {
   margin: auto 0;
   height: calc(100% - 22px);
   overflow-y: scroll;
+  user-select: none;
 }
 
 #sidebar_left_button {
